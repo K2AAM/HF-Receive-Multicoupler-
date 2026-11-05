@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+sim/spice/*.txt
+sim/spice/*.log

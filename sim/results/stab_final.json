@@ -1,0 +1,42 @@
+{
+ "port2 Re(Z) min, others 50": [
+  3.05,
+  2000000000.0
+ ],
+ "port2 Re(Z) min, others open": [
+  3.09,
+  2000000000.0
+ ],
+ "port2 Re(Z) min, others short": [
+  2.95,
+  2000000000.0
+ ],
+ "port2 Re(Z) min, others C": [
+  3.17,
+  2000000000.0
+ ],
+ "port2 Re(Z) min, others L": [
+  2.92,
+  2000000000.0
+ ],
+ "input Re(Z) min, ports 50": [
+  0.83,
+  2000000000.0
+ ],
+ "input Re(Z) min, ports open": [
+  0.83,
+  2000000000.0
+ ],
+ "input Re(Z) min, ports short": [
+  0.83,
+  2000000000.0
+ ],
+ "input Re(Z) min, ports C": [
+  0.83,
+  2000000000.0
+ ],
+ "input Re(Z) min, ports L": [
+  0.83,
+  2000000000.0
+ ]
+}
