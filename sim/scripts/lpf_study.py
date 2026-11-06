@@ -1,0 +1,23 @@
+"""Full-circuit AC Monte Carlo of the input filter options (independent part tolerances)."""
+import gen, tolerance as T, numpy as np, json, sys
+N = int(sys.argv[1]) if len(sys.argv) > 1 else 60
+def metrics(P):
+    r = gen.ac(P, 1e4, 120e6, 25); f = r['f']; b = (f >= 1e4) & (f <= 50.01e6)
+    g = lambda F: float(r['S21'][np.argmin(abs(f - F))])
+    return dict(S11max=float(r['S11'][b].max()), flat=float(r['S21'][b].max() - r['S21'][b].min()),
+                G1=g(1e6), G50=g(50e6), rej88=-g(88e6))
+out = {}
+options = {"78FR +/-10% L, C0G +/-5% C": dict(L="L_78FR_K", C="C_C0G_J"),
+           "78FR +/-10% L, C0G +/-2% C": dict(L="L_78FR_K", C="C_C0G_G"),
+           "L binned +/-3%, C0G +/-2% C": dict(L="L_selected", C="C_C0G_G")}
+for name, o in options.items():
+    rng = np.random.default_rng(2026)
+    rows, fails = [], 0
+    for i in range(N):
+        try: rows.append(metrics(T.sample(rng, "A", devices=False, **o)))
+        except gen.SimError as e: fails += 1
+    a = {k: np.array([x[k] for x in rows]) for k in rows[0]}
+    out[name] = dict(n=len(rows), failed=fails, **{k: dict(worst=float(v.max() if k in ('S11max','flat') else v.min()),
+                     p95=float(np.percentile(v, 95 if k in ('S11max','flat') else 5)), median=float(np.median(v))) for k, v in a.items()})
+    print(name, json.dumps(out[name]), flush=True)
+json.dump(out, open('../results/lpf_tolerance_study.json', 'w'), indent=1)

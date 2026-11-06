@@ -23,9 +23,17 @@ The schematic and calculations are settled. These are guidelines for the KiCad l
 
 ## Supply and decoupling
 - **Each supply-side resistor** (RE2, R4, R3 midpoint cap, RPU, RC, Q3A collector): a 100 nF X7R to the plane within 5 mm.
-- **Electrolytic polarity:** the R3-midpoint 10 µF goes + to the +9.9 V side. The R1-midpoint 10 µF goes + to the midpoint.
-- Run the +9.9 V rail as a trace star from C22, not as a daisy chain.
-- Keep U1, L4 and C20–C22 at the J6 end, away from the LPF.
+- **Electrolytic polarity:** the R3-midpoint 10 µF goes + to the +9.8 V side. The R1-midpoint 10 µF goes + to the midpoint.
+- Run the +9.8 V rail as a trace star from C22, not as a daisy chain.
+- Keep U1, L4 and C20–C23 at the J6 end, away from the LPF.
+- **Supply footprints:**
+  - L4 (RLB0914-100KL): radial, 9.2 mm diameter keep-out, 5 mm pitch, 0.65 mm leads.
+  - F1 (RXEF030): radial, 7.4 × 3 mm, 5.1 mm pitch.
+  - RDAMP: 1/4 W axial.
+- **D6 and D7:** mount them at U1's pins.
+- **C23:** within 10 mm of U1 OUT.
+- **Hot-plug inrush:** the J6 → F1 → D5 → C20 path carries up to ~11 A for under 1 ms when hot-plugged. Use a ≥ 1 mm trace.
+- **LPF inductors:** footprints sized for the 78FR body (2.8 × 7.1 mm) with 10 mm lead pitch. Mark the selected values on the silkscreen.
 
 ## Assembly order
 1. Power section, then test it (bring-up step 1).

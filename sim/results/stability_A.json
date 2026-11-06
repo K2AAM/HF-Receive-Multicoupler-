@@ -1,0 +1,242 @@
+{
+ "build": "A",
+ "mu_min_input-port1": {
+  "mu": 1.066,
+  "at_Hz": 2000000000.0,
+  "other_port_gammas": [
+   "1.00<60",
+   "1.00<60",
+   "1.00<60"
+  ],
+  "combos": 15625,
+  "verdict": "mu>1 (unconditionally stable for these other-port loads)"
+ },
+ "mu_min_port1-port2": {
+  "mu": 1.066,
+  "at_Hz": 2000000000.0,
+  "other_port_gammas": [
+   "0.00<0",
+   "1.00<60",
+   "1.00<60"
+  ],
+  "combos": 15625,
+  "verdict": "mu>1 (unconditionally stable for these other-port loads)"
+ },
+ "max_abs_S00": 0.9998010889690172,
+ "max_abs_S11": 0.9340999350781657,
+ "max_abs_gain_any_path_dB": 1.7243243470210146,
+ "negative_control": {
+  "result": {
+   "peak_mV": 423.75,
+   "late_3to4us_uV": 482967.835,
+   "late_gt7us_uV": 5054720.535,
+   "decays": false
+  },
+  "detected": true
+ },
+ "kicks": {
+  "all direct 50 ohm": {
+   "peak_mV": 542.23,
+   "late_3to4us_uV": 0.0,
+   "late_gt7us_uV": 0.0,
+   "decays": true
+  },
+  "all ports 0.1 m coax, far end open": {
+   "peak_mV": 673.53,
+   "late_3to4us_uV": 0.0,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 0.5 m coax, far end open": {
+   "peak_mV": 536.97,
+   "late_3to4us_uV": 0.0,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 2.0 m coax, far end open": {
+   "peak_mV": 537.39,
+   "late_3to4us_uV": 0.31,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 5.0 m coax, far end open": {
+   "peak_mV": 536.73,
+   "late_3to4us_uV": 20.16,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 0.1 m coax, far end short": {
+   "peak_mV": 450.42,
+   "late_3to4us_uV": 0.03,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 0.5 m coax, far end short": {
+   "peak_mV": 536.93,
+   "late_3to4us_uV": 0.84,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 2.0 m coax, far end short": {
+   "peak_mV": 537.39,
+   "late_3to4us_uV": 10.44,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 5.0 m coax, far end short": {
+   "peak_mV": 536.73,
+   "late_3to4us_uV": 55.23,
+   "late_gt7us_uV": 0.04,
+   "decays": true
+  },
+  "all ports 0.1 m coax, far end C": {
+   "peak_mV": 485.19,
+   "late_3to4us_uV": 0.01,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 0.5 m coax, far end C": {
+   "peak_mV": 536.93,
+   "late_3to4us_uV": 0.21,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 2.0 m coax, far end C": {
+   "peak_mV": 537.39,
+   "late_3to4us_uV": 6.59,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 5.0 m coax, far end C": {
+   "peak_mV": 536.73,
+   "late_3to4us_uV": 42.42,
+   "late_gt7us_uV": 0.04,
+   "decays": true
+  },
+  "all ports 0.1 m coax, far end L": {
+   "peak_mV": 661.61,
+   "late_3to4us_uV": 0.06,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 0.5 m coax, far end L": {
+   "peak_mV": 536.96,
+   "late_3to4us_uV": 0.03,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 2.0 m coax, far end L": {
+   "peak_mV": 537.39,
+   "late_3to4us_uV": 0.38,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "all ports 5.0 m coax, far end L": {
+   "peak_mV": 536.73,
+   "late_3to4us_uV": 24.32,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 00: 5.0m/C, 2.0m/L, 1.0m/C, 5.0m/short, 0.1m/short": {
+   "peak_mV": 513.79,
+   "late_3to4us_uV": 45.24,
+   "late_gt7us_uV": 0.04,
+   "decays": true
+  },
+  "mixed 01: 0.3m/L, 5.0m/open, 1.0m/L, 0.1m/C, 0.1m/50": {
+   "peak_mV": 524.18,
+   "late_3to4us_uV": 0.05,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 02: 5.0m/short, 0.3m/short, 2.0m/short, 5.0m/50, 1.0m/50": {
+   "peak_mV": 535.34,
+   "late_3to4us_uV": 47.29,
+   "late_gt7us_uV": 0.03,
+   "decays": true
+  },
+  "mixed 03: 1.0m/50, 1.0m/L, 5.0m/C, 2.0m/C, 0.3m/L": {
+   "peak_mV": 538.3,
+   "late_3to4us_uV": 0.01,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 04: 1.0m/short, 5.0m/open, 5.0m/C, 0.1m/open, 1.0m/open": {
+   "peak_mV": 569.85,
+   "late_3to4us_uV": 0.07,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 05: 0.1m/50, 5.0m/50, 5.0m/L, 5.0m/C, 1.0m/50": {
+   "peak_mV": 536.72,
+   "late_3to4us_uV": 0.01,
+   "late_gt7us_uV": 0.0,
+   "decays": true
+  },
+  "mixed 06: 0.3m/50, 0.3m/short, 5.0m/open, 0.1m/open, 5.0m/C": {
+   "peak_mV": 568.02,
+   "late_3to4us_uV": 0.0,
+   "late_gt7us_uV": 0.0,
+   "decays": true
+  },
+  "mixed 07: 5.0m/short, 2.0m/short, 1.0m/open, 2.0m/L, 2.0m/open": {
+   "peak_mV": 537.39,
+   "late_3to4us_uV": 46.27,
+   "late_gt7us_uV": 0.03,
+   "decays": true
+  },
+  "mixed 08: 1.0m/short, 5.0m/L, 0.1m/50, 5.0m/L, 2.0m/C": {
+   "peak_mV": 537.98,
+   "late_3to4us_uV": 0.06,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 09: 0.1m/C, 1.0m/open, 0.3m/50, 2.0m/50, 2.0m/L": {
+   "peak_mV": 537.52,
+   "late_3to4us_uV": 0.01,
+   "late_gt7us_uV": 0.0,
+   "decays": true
+  },
+  "mixed 10: 2.0m/short, 2.0m/50, 0.1m/open, 2.0m/short, 1.0m/short": {
+   "peak_mV": 570.19,
+   "late_3to4us_uV": 13.79,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 11: 0.3m/open, 0.3m/L, 1.0m/short, 1.0m/L, 0.3m/50": {
+   "peak_mV": 538.56,
+   "late_3to4us_uV": 0.01,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 12: 1.0m/C, 1.0m/C, 1.0m/C, 5.0m/open, 1.0m/50": {
+   "peak_mV": 537.08,
+   "late_3to4us_uV": 2.53,
+   "late_gt7us_uV": 0.0,
+   "decays": true
+  },
+  "mixed 13: 0.3m/short, 0.1m/50, 5.0m/open, 1.0m/L, 5.0m/short": {
+   "peak_mV": 538.04,
+   "late_3to4us_uV": 0.1,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  },
+  "mixed 14: 0.1m/C, 0.1m/short, 1.0m/L, 0.1m/C, 1.0m/open": {
+   "peak_mV": 501.15,
+   "late_3to4us_uV": 0.0,
+   "late_gt7us_uV": 0.0,
+   "decays": true
+  },
+  "mixed 15: 5.0m/L, 1.0m/L, 2.0m/L, 5.0m/50, 0.3m/open": {
+   "peak_mV": 538.31,
+   "late_3to4us_uV": 20.95,
+   "late_gt7us_uV": 0.01,
+   "decays": true
+  }
+ },
+ "kick_summary": {
+  "cases": 33,
+  "sim_failures": 0,
+  "non_decaying": 0
+ }
+}

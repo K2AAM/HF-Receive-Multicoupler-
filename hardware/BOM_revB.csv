@@ -1,36 +1,40 @@
-Ref,Qty,Value,Manufacturer part (example),Package,Role / notes,Source checked 2026-11-05,Status
-"Q1N,Q3A,Q2",3,2N3904,onsemi 2N3904BU or Diotec 2N3904,TO-92,"Gain stage NPN, diamond pre-driver, NPN output. Buy all 2N3904 from one lot",https://www.digikey.com.au/en/products/detail/stmicroelectronics/2N3904/603420 (lists onsemi substitute in stock),Stocked jellybean
-"Q1P,Q2A,Q3",3,2N3906,Diotec 2N3906 or onsemi 2N3906BU,TO-92,"Gain stage PNP, diamond pre-driver, PNP output. Buy all 2N3906 from one lot",https://www.digikey.com/en/products/detail/diotec-semiconductor/2N3906/22191309,Stocked jellybean (Active)
-"D1-D4",4,1N4148,any,DO-35,Input clamp: two in series each polarity,not checked (jellybean),
-D5,1,1N5819,any,DO-41,Reverse-polarity protection,not checked (jellybean),
-GDT1,1,90 V GDT,Bourns 2027-09-BLF,axial 2-pole,Input surge to chassis ground,https://www.digikey.com.mx/en/products/detail/bourns-inc/2027-09-BLF/1219537,Active ~US$1.83
-U1,1,LM317T,TI LM317T/NOPB,TO-220,"Set to 9.93 V (R10 240, R11 1.65k)",not re-checked (jellybean),
-F1,1,PTC 200 mA hold,e.g. Littelfuse RXEF020,radial,Trips on output-stage fault,not checked,
-"L1,L3",2,220 nH,Bourns 78FR22K-RC,axial,"LPF; Q 40 @ 25 MHz, SRF 380 MHz",https://digikey.cn/en/products/detail/bourns-inc/78FR22K-RC/1306006,Active
-L2,1,270 nH,Bourns 78FR27K-RC (same series),axial,LPF,not checked - confirm stock,
-L4,1,100 uH >=200 mA,any radial power inductor,radial,Rail filter after U1,not checked,
-"C4,C7",2,43 pF C0G 5% 100 V,any,radial,LPF,not checked,
-"C5,C6",2,100 pF C0G 5% 100 V,any,radial,LPF,not checked,
-C1,1,4.7 uF film 63-100 V,WIMA MKS4D044705G00KSSD (or MKS4C044704D00KSSD 63 V 15 mm),radial film,"Input DC block, no electrolytic in series path",https://www.digikey.de/en/products/detail/wima/MKS4D044705G00KSSD/9370610,Active
-"C10-C13",4,4.7 uF film 63 V,WIMA MKS4 4.7 uF,radial film,Port DC blocks,see C1,
-"C2,C3,C8,C9",4,2.2 uF film 63 V,WIMA MKS4 2.2 uF,radial film,"Base coupling, feedback, AC load",not checked,
-"bias mid caps",2,10 uF 25 V electrolytic,any,radial,"R1 midpoint to GND, R3 midpoint to +V (polarity: + to +V side)",not checked,
-C20,1,220 uF 25 V,any low-ESR,radial,U1 input,not checked,
-C21,1,10 uF 25 V,any,radial,U1 ADJ bypass,not checked,
-C22,1,470 uF 16 V + 100 nF,any,radial,Rail,not checked,
-decoupling,~10,100 nF X7R 50 V,any,radial,At each supply-side resistor,not checked,
-"RE1,RE2",2,56,metal film 1% 1/4 W,axial,,,
-RF,1,220,metal film 1%,axial,Sets gain/match (270 for +3 dB build),,
-RL,1,220,metal film 1%,axial,AC load,,
-"R1A,R1B,R3A,R3B",4,1.5k,metal film 1%,axial,Collector-feedback bias,,
-"R2,R4",2,3.3k,metal film 1%,axial,Sets Q1 current ~29 mA,,
-"RPU,RPD",2,360,metal film 1% 1/4 W,axial,Pre-driver current ~11 mA (48 mW),,
-"RX1,RX2",2,15,metal film 1%,axial,Sets output Iq ~38 mA (12 -> 32 mA; 18 -> 46 mA),,
-"RE3,RE4",2,3.3,metal film 1%,axial,Output emitter resistors,,
-RC,1,4.7,metal film,axial,Q2 collector decoupling,,
-"RS1-RS4",4,51,metal film 1%,axial,Port back-termination,,
-RBL,1,10k,metal film,axial,Bleeds input node,,
-"R10,R11",2,"240, 1.65k",metal film 1%,axial,LM317 setting,,
-"J1-J5",5,BNC jack R/A PCB 50 ohm,Amphenol RF 031-5431-10RFX,through-hole,,https://www.digikey.co.uk/en/products/detail/amphenol-rf/031-5431-10RFX/2041816,Active
-J6,1,2.1 mm DC jack,any panel/PCB,,Center positive,not checked,
-Enclosure,1,Hammond 1590BB,Hammond 1590BB,die-cast,,not re-checked,
+Ref,Qty,Value,Tolerance / rating,Manufacturer part,Package,Role / notes,Source (checked 2026-11-05),Status
+"Q1N,Q3A,Q2",3,2N3904,hFE 100-300 @10 mA,onsemi 2N3904BU or Diotec 2N3904,TO-92,"Gain stage NPN, diamond pre-driver, NPN output. Buy all from one lot",https://www.digikey.com.au/en/products/detail/stmicroelectronics/2N3904/603420 (lists onsemi substitute in stock),Stocked jellybean
+"Q1P,Q2A,Q3",3,2N3906,hFE 100-300 @10 mA,Diotec 2N3906 or onsemi 2N3906BU,TO-92,"Gain stage PNP, diamond pre-driver, PNP output. Buy all from one lot",https://www.digikey.com/en/products/detail/diotec-semiconductor/2N3906/22191309,Stocked jellybean (Active)
+D1-D4,4,1N4148,,any,DO-35,"Input clamp, two in series each polarity",jellybean - not individually checked,
+D5,1,1N5819,40 V 1 A; IFSM 25 A,any,DO-41,"Reverse-polarity protection; carries ~8-11 A hot-plug inrush into C20 for <1 ms (simulated)",jellybean - not individually checked,
+"D6,D7",2,1N4002,100 V 1 A,any,DO-41,"NEW. LM317 protection per TI datasheet: D6 U1 OUT(anode) to IN(cathode); D7 ADJ(anode) to OUT(cathode)",jellybean - not individually checked,
+GDT1,1,90 V GDT,,Bourns 2027-09-BLF,axial 2-pole,Input surge to chassis ground,https://www.digikey.com.mx/en/products/detail/bourns-inc/2027-09-BLF/1219537,Active
+U1,1,LM317T,VREF 1.20-1.30 V; min load 10 mA max,TI LM317T/NOPB,TO-220,"Rail 9.81 V at 13.8 V in (R10 240, R11 1.65k). ~0.33 W, no heatsink needed",https://www.ti.com/product/LM317,Active
+F1,1,PTC 0.3 A hold / 0.6 A trip,Rmin 0.88 / Rmax 1.33 / R1max 2.1 ohm,Littelfuse RXEF030,radial 7.4 x 3 mm,"CHANGED from RXEF020: lower resistance keeps U1 at >=3 V headroom at 13.4 V in",https://octopart.com/part/littelfuse/RXEF030,Production
+"L1,L3",2,220 nH,+/-10 % (K); select to +/-3 % on VNA,Bourns 78FR22K-RC,axial 2.79 x 7.11 mm,"LPF. Q 40 min @25 MHz, SRF 380 MHz, DCR 75 mohm. Buy 10 and select (see bring-up)",https://digikey.cn/en/products/detail/bourns-inc/78FR22K-RC/1306006 (DigiKey M10148-ND),Active
+L2,1,270 nH,+/-10 % (K); select to +/-3 % on VNA,Bourns 78FR27K-RC,axial,"LPF. 1.11 A, DCR 85 mohm. Buy 5 and select",DigiKey 118-78FR27K-RC-ND,Listed
+L4,1,10 uH,+/-10 %; 2.7 A; DCR 48 mohm max; SRF 20 MHz,Bourns RLB0914-100KL,radial 8.7-9.2 dia x 12-13 mm; 5 mm pitch,"CHANGED from unspecified 100 uH. Rail filter after U1, with RDAMP",https://uk.rs-online.com/web/p/leaded-inductors/8118799,Production
+"C4,C7",2,43 pF C0G,+/-2 % (G); 25 V,KEMET C315C430G3G5TA,radial 2.54 mm,"LPF. 25 V is adequate: node clamped to ~+/-1.5 V by D1-D4. Alt: C316C430G3G5TA",https://ichome.com/product-detail/kemet/c315c430g3g5ta (KEMET Active),"Active - stock not confirmed, check before ordering"
+"C5,C6",2,100 pF C0G,+/-2 % (G); 100 V,KEMET C315C101G1G5TA,radial 2.54 mm,LPF (+/-1 %: C315C101F1G5TA),DigiKey.de (3293 in stock when checked),Active
+C1,1,4.7 uF film,+/-10 %; 100 V,WIMA MKS4D044705G00KSSD,radial film,"Input DC block, no electrolytic in series path",https://www.digikey.de/en/products/detail/wima/MKS4D044705G00KSSD/9370610,Active
+C10-C13,4,4.7 uF film,+/-10 %; 63 V,WIMA MKS4 4.7 uF,radial film,Port DC blocks,see C1,
+"C2,C3,C8,C9",4,2.2 uF film,+/-10 %; 63 V,WIMA MKS4 2.2 uF,radial film,"Base coupling (C2,C3), feedback (C8), AC load (C9)",not individually checked,
+"C14,C15",2,10 uF 25 V Al electrolytic,+/-20 %,any,radial,"R1 midpoint to GND; R3 midpoint to +V (+ toward +V)",jellybean,
+C20,1,220 uF 25 V low-ESR Al,+/-20 %,any,radial,U1 input (with 100 nF),jellybean,
+C21,1,10 uF 25 V Al,+/-20 %,any,radial,U1 ADJ bypass (requires D7),jellybean,
+C23,1,10 uF 25 V Al,+/-20 %,any,radial,"NEW. At U1 OUT pin, before L4",jellybean,
+C22,1,470 uF 16 V Al + 100 nF,+/-20 %,any,radial,Rail reservoir after L4/RDAMP,jellybean,
+decoupling,~10,100 nF X7R 50 V,,any,radial,At each supply-side resistor and at C20/C22,jellybean,
+RDAMP,1,1.0,1 %; 1/4 W,metal film,axial,"NEW. Damps L4 with C22; 9 mW",,
+"RE1,RE2",2,56,1 %,metal film 1/4 W,axial,Build A (B: 56; C: 47),,
+RF,1,220,1 %,metal film,axial,"Build A (B: 270; C: 330)",,
+RL,1,220,1 %,metal film,axial,AC load (all builds),,
+"R1A,R1B,R3A,R3B",4,1.5k,1 %,metal film,axial,Collector-feedback bias,,
+"R2,R4",2,3.3k,1 %,metal film,axial,Sets Q1 current ~29 mA,,
+"RPU,RPD",2,360,1 %,metal film 1/4 W,axial,Pre-driver ~11 mA (48 mW),,
+"RX1,RX2",2,15,1 %,metal film,axial,Sets output Iq ~38 mA,,
+"RE3,RE4",2,3.3,1 %,metal film,axial,Output emitter resistors,,
+RC,1,4.7,1 %,metal film,axial,Q2 collector decoupling,,
+RS1-RS4,4,51,1 %,metal film,axial,Port back-termination,,
+RBL,1,10k,1 %,metal film,axial,Input bleed,,
+"R10,R11",2,"240, 1.65k",1 %,metal film,axial,LM317 setting,,
+RDUMMY,1,100 ohm 3 W,5 %,TE ROX3SJ100R,axial 5.5 x 16 mm,"NEW. Test fixture only (not on PCB): rail to GND during power-only bring-up, ~98 mA / ~1 W",https://www.digikey.com/en/products/detail/te-connectivity-passive-product/ROX3SJ100R/3477616 (A106005CT-ND),Active
+J1-J5,5,BNC jack R/A PCB 50 ohm,,Amphenol RF 031-5431-10RFX,through-hole,,https://www.digikey.co.uk/en/products/detail/amphenol-rf/031-5431-10RFX/2041816,Active
+J6,1,2.1 mm DC jack,,any,panel/PCB,Center positive,not checked,
+Enclosure,1,Hammond 1590BB,,Hammond 1590BB,die-cast,,not re-checked,

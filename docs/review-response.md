@@ -1,5 +1,17 @@
 # Review response — Rev A to Rev B
 
+> **Superseded in part (2026-11-05):** see [`review2-response.md`](review2-response.md).
+>
+> Corrected there:
+>
+> - the IIP2 figures (the +70 dBm was unconverged; it is about +79 dBm)
+> - the "≤ 1 dB" convergence claim
+> - the ±5 % LPF Monte Carlo (the inductors are really ±10 % and are now VNA-selected)
+> - the single-port stability claim, now a multiport μ test plus cable kicks
+> - the rail, now 9.81 V with a 10 µH RLB0914 choke and RXEF030 PTC
+>
+> Numbers below that conflict with review 2 are kept only as history.
+
 Dates: sourcing checked 2026-11-05. Labels used below:
 
 - **[sim]** = ngspice run that is in this repo

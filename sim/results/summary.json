@@ -1,73 +1,93 @@
 {
- "A_+1.5dB": {
+ "A": {
+  "build": "A",
+  "parts": {
+   "RE1": 56,
+   "RE2": 56,
+   "RF": 220,
+   "RLX": 220
+  },
+  "status": {
+   "op": "ok",
+   "ac": "ok",
+   "noise": "ok",
+   "two-tone": "ok",
+   "p1db": "ok"
+  },
   "op": {
-   "v(n4)": -7.772e-25,
-   "v(bn)": 2.393135,
-   "v(bp)": 7.507082,
-   "v(x)": 4.874667,
-   "v(d1)": 5.764483,
-   "v(d2)": 3.993323,
-   "v(out)": 4.879543,
-   "v(vcf)": 9.71899,
-   "@q1n[ic]": 0.02926516,
-   "@q1p[ic]": -0.0291949,
-   "@q2a[ic]": -0.0112973,
-   "@q3a[ic]": 0.01085529,
-   "@q2[ic]": 0.03851284,
-   "@q3[ic]": -0.0384458,
-   "i(vcc)": -0.0909281
+   "v(x)": 4.83,
+   "v(out)": 4.84,
+   "v(d1)": 5.72,
+   "v(d2)": 3.95,
+   "v(bn)": 2.37,
+   "v(bp)": 7.44,
+   "v(vcf)": 9.63,
+   "v(vcc)": 9.81,
+   "@q1n[ic]": 28.9,
+   "@q1p[ic]": -28.83,
+   "@q2a[ic]": -11.18,
+   "@q3a[ic]": 10.74,
+   "@q2[ic]": 38.03,
+   "@q3[ic]": -37.96,
+   "Irail_mA": 89.83
   },
-  "gain": {
+  "op_full_supply": {
+   "rail_V": 9.81,
+   "input_mA": 95.12
+  },
+  "gain_dB": {
    "0.01MHz": 1.72,
-   "1MHz": 1.73,
+   "0.1MHz": 1.72,
+   "1MHz": 1.72,
    "10MHz": 1.69,
-   "30MHz": 1.43,
-   "50MHz": 0.84
+   "30MHz": 1.42,
+   "50MHz": 0.83
   },
-  "flatness_10k_50M": [
+  "gain_range_10k_50M_dB": [
    0.96,
-   1.73
+   1.72
   ],
-  "S11_max_10k_50M": -23.3,
-  "S22_max_10k_50M": -23.7,
-  "iso": {
-   "1MHz": -34.2,
+  "S11_max_10k_50M_dB": -23.32,
+  "S22_max_10k_50M_dB": -23.71,
+  "port_isolation_dB": {
+   "1MHz": -34.22,
    "10MHz": -34.0,
-   "30MHz": -32.3,
-   "50MHz": -29.4
+   "30MHz": -32.32,
+   "50MHz": -29.39
   },
-  "rev_iso": {
-   "1MHz": -106.8,
-   "10MHz": -79.6,
+  "reverse_isolation_dB": {
+   "1MHz": -106.85,
+   "10MHz": -79.63,
    "30MHz": -61.0,
    "50MHz": -52.3
   },
-  "rej": {
-   "88MHz": -35.9,
-   "100MHz": -44.9,
-   "108MHz": -49.4
+  "rejection_dB": {
+   "88MHz": 35.93,
+   "100MHz": 44.93,
+   "108MHz": 49.39,
+   "150MHz": 75.91
   },
-  "NF": {
-   "1MHz": 8.21,
-   "10MHz": 8.33,
-   "30MHz": 9.22,
-   "50MHz": 10.63
+  "NF_dB": {
+   "1MHz": 8.2,
+   "10MHz": 8.32,
+   "30MHz": 9.2,
+   "50MHz": 10.6
   },
-  "NF_top10MHz": [
+  "NF_contributors_10MHz_pct": [
    [
     "q1p",
-    16.8
+    16.6
    ],
    [
     "rgin",
     14.7
    ],
    [
-    "q1n",
+    "rf",
     12.9
    ],
    [
-    "rf",
+    "q1n",
     12.8
    ],
    [
@@ -80,7 +100,7 @@
    ],
    [
     "rs1",
-    9.5
+    9.6
    ],
    [
     "rlx",
@@ -88,102 +108,170 @@
    ]
   ],
   "IM": {
-   "IP3_1MHz": {
-    "OIP3": 32.4,
-    "IIP3": 30.7
+   "IP3 1.0/1.2 MHz @-10 dBm/tone": {
+    "IIP": 31.9,
+    "OIP": 33.62,
+    "IIP_80steps": 31.68,
+    "conv_delta_dB": 0.22
    },
-   "IP3_7MHz": {
-    "OIP3": 31.9,
-    "IIP3": 30.1
+   "IP3 1.0/1.2 MHz @0 dBm/tone": {
+    "IIP": 30.79,
+    "OIP": 32.49,
+    "IIP_80steps": 30.79,
+    "conv_delta_dB": 0.0
    },
-   "IP3_14MHz": {
-    "OIP3": 30.9,
-    "IIP3": 29.3
+   "IP3 7.0/7.2 MHz @-10 dBm/tone": {
+    "IIP": 30.83,
+    "OIP": 32.54,
+    "IIP_80steps": 30.86,
+    "conv_delta_dB": 0.03
    },
-   "IP3_28MHz": {
-    "OIP3": 28.9,
-    "IIP3": 27.4
+   "IP3 7.0/7.2 MHz @0 dBm/tone": {
+    "IIP": 29.7,
+    "OIP": 31.39,
+    "IIP_80steps": 29.7,
+    "conv_delta_dB": 0.01
    },
-   "IP2_6+7MHz": {
-    "OIP2": 71.7,
-    "IIP2": 70.0
+   "IP3 14.0/14.2 MHz @-10 dBm/tone": {
+    "IIP": 29.28,
+    "OIP": 30.93,
+    "IIP_80steps": 29.25,
+    "conv_delta_dB": 0.03
    },
-   "IP2_0.6+1.0MHz": {
-    "OIP2": 70.9,
-    "IIP2": 69.2
+   "IP3 14.0/14.2 MHz @0 dBm/tone": {
+    "IIP": 28.17,
+    "OIP": 29.81,
+    "IIP_80steps": 28.18,
+    "conv_delta_dB": 0.01
+   },
+   "IP3 28.0/28.2 MHz @-10 dBm/tone": {
+    "IIP": 27.12,
+    "OIP": 28.57,
+    "IIP_80steps": 27.11,
+    "conv_delta_dB": 0.0
+   },
+   "IP3 28.0/28.2 MHz @0 dBm/tone": {
+    "IIP": 26.11,
+    "OIP": 27.54,
+    "IIP_80steps": 26.12,
+    "conv_delta_dB": 0.0
+   },
+   "IP2 6+7 MHz @-10 dBm/tone": {
+    "IIP": 79.67,
+    "OIP": 81.38,
+    "IIP_80steps": 78.84,
+    "conv_delta_dB": 0.83
+   },
+   "IP2 6+7 MHz @0 dBm/tone": {
+    "IIP": 78.51,
+    "OIP": 80.2,
+    "IIP_80steps": 78.32,
+    "conv_delta_dB": 0.18
+   },
+   "IP2 0.6+1.0 MHz @-10 dBm/tone": {
+    "IIP": 82.49,
+    "OIP": 84.21,
+    "IIP_80steps": 83.43,
+    "conv_delta_dB": 0.94
+   },
+   "IP2 0.6+1.0 MHz @0 dBm/tone": {
+    "IIP": 79.31,
+    "OIP": 81.01,
+    "IIP_80steps": 79.19,
+    "conv_delta_dB": 0.11
    }
   },
   "P1dB_7MHz": {
-   "input": 12,
-   "output": 12.0
+   "input_dBm": 11.01,
+   "output_dBm": 11.7
   }
  },
- "B_+3dB_recommended": {
-  "op": {
-   "v(n4)": -7.772e-25,
-   "v(bn)": 2.393135,
-   "v(bp)": 7.507082,
-   "v(x)": 4.874667,
-   "v(d1)": 5.764483,
-   "v(d2)": 3.993323,
-   "v(out)": 4.879543,
-   "v(vcf)": 9.71899,
-   "@q1n[ic]": 0.02926516,
-   "@q1p[ic]": -0.0291949,
-   "@q2a[ic]": -0.0112973,
-   "@q3a[ic]": 0.01085529,
-   "@q2[ic]": 0.03851284,
-   "@q3[ic]": -0.0384458,
-   "i(vcc)": -0.0909281
+ "B": {
+  "build": "B",
+  "parts": {
+   "RE1": 56,
+   "RE2": 56,
+   "RF": 270,
+   "RLX": 220
   },
-  "gain": {
+  "status": {
+   "op": "ok",
+   "ac": "ok",
+   "noise": "ok",
+   "two-tone": "ok",
+   "p1db": "ok"
+  },
+  "op": {
+   "v(x)": 4.83,
+   "v(out)": 4.84,
+   "v(d1)": 5.72,
+   "v(d2)": 3.95,
+   "v(bn)": 2.37,
+   "v(bp)": 7.44,
+   "v(vcf)": 9.63,
+   "v(vcc)": 9.81,
+   "@q1n[ic]": 28.9,
+   "@q1p[ic]": -28.83,
+   "@q2a[ic]": -11.18,
+   "@q3a[ic]": 10.74,
+   "@q2[ic]": 38.03,
+   "@q3[ic]": -37.96,
+   "Irail_mA": 89.83
+  },
+  "op_full_supply": {
+   "rail_V": 9.81,
+   "input_mA": 95.12
+  },
+  "gain_dB": {
    "0.01MHz": 3.15,
+   "0.1MHz": 3.16,
    "1MHz": 3.16,
    "10MHz": 3.11,
-   "30MHz": 2.75,
+   "30MHz": 2.74,
    "50MHz": 2.0
   },
-  "flatness_10k_50M": [
-   2.17,
+  "gain_range_10k_50M_dB": [
+   2.16,
    3.16
   ],
-  "S11_max_10k_50M": -20.8,
-  "S22_max_10k_50M": -23.6,
-  "iso": {
-   "1MHz": -34.2,
+  "S11_max_10k_50M_dB": -20.75,
+  "S22_max_10k_50M_dB": -23.64,
+  "port_isolation_dB": {
+   "1MHz": -34.22,
    "10MHz": -34.0,
-   "30MHz": -32.3,
-   "50MHz": -29.3
+   "30MHz": -32.31,
+   "50MHz": -29.26
   },
-  "rev_iso": {
-   "1MHz": -107.4,
-   "10MHz": -80.2,
-   "30MHz": -61.6,
-   "50MHz": -52.9
+  "reverse_isolation_dB": {
+   "1MHz": -107.43,
+   "10MHz": -80.22,
+   "30MHz": -61.59,
+   "50MHz": -52.87
   },
-  "rej": {
-   "88MHz": -35.3,
-   "100MHz": -44.5,
-   "108MHz": -49.0
+  "rejection_dB": {
+   "88MHz": 35.34,
+   "100MHz": 44.5,
+   "108MHz": 49.02,
+   "150MHz": 75.7
   },
-  "NF": {
-   "1MHz": 7.63,
-   "10MHz": 7.77,
-   "30MHz": 8.7,
-   "50MHz": 10.17
+  "NF_dB": {
+   "1MHz": 7.62,
+   "10MHz": 7.76,
+   "30MHz": 8.68,
+   "50MHz": 10.15
   },
-  "NF_top10MHz": [
+  "NF_contributors_10MHz_pct": [
    [
     "q1p",
-    17.7
+    17.6
    ],
    [
     "rgin",
-    16.7
+    16.8
    ],
    [
     "q1n",
-    13.5
+    13.4
    ],
    [
     "rf",
@@ -199,7 +287,7 @@
    ],
    [
     "rs1",
-    7.8
+    7.9
    ],
    [
     "rlx",
@@ -207,102 +295,170 @@
    ]
   ],
   "IM": {
-   "IP3_1MHz": {
-    "OIP3": 34.3,
-    "IIP3": 31.2
+   "IP3 1.0/1.2 MHz @-10 dBm/tone": {
+    "IIP": 30.58,
+    "OIP": 33.74,
+    "IIP_80steps": 30.36,
+    "conv_delta_dB": 0.22
    },
-   "IP3_7MHz": {
-    "OIP3": 31.5,
-    "IIP3": 28.3
+   "IP3 1.0/1.2 MHz @0 dBm/tone": {
+    "IIP": 28.92,
+    "OIP": 32.04,
+    "IIP_80steps": 28.94,
+    "conv_delta_dB": 0.03
    },
-   "IP3_14MHz": {
-    "OIP3": 30.8,
-    "IIP3": 27.7
+   "IP3 7.0/7.2 MHz @-10 dBm/tone": {
+    "IIP": 29.4,
+    "OIP": 32.52,
+    "IIP_80steps": 29.39,
+    "conv_delta_dB": 0.01
    },
-   "IP3_28MHz": {
-    "OIP3": 28.7,
-    "IIP3": 25.9
+   "IP3 7.0/7.2 MHz @0 dBm/tone": {
+    "IIP": 27.77,
+    "OIP": 30.87,
+    "IIP_80steps": 27.77,
+    "conv_delta_dB": 0.0
    },
-   "IP2_6+7MHz": {
-    "OIP2": 83.0,
-    "IIP2": 79.9
+   "IP3 14.0/14.2 MHz @-10 dBm/tone": {
+    "IIP": 27.77,
+    "OIP": 30.83,
+    "IIP_80steps": 27.76,
+    "conv_delta_dB": 0.01
    },
-   "IP2_0.6+1.0MHz": {
-    "OIP2": 74.5,
-    "IIP2": 71.3
+   "IP3 14.0/14.2 MHz @0 dBm/tone": {
+    "IIP": 26.23,
+    "OIP": 29.26,
+    "IIP_80steps": 26.24,
+    "conv_delta_dB": 0.01
+   },
+   "IP3 28.0/28.2 MHz @-10 dBm/tone": {
+    "IIP": 25.63,
+    "OIP": 28.43,
+    "IIP_80steps": 25.65,
+    "conv_delta_dB": 0.02
+   },
+   "IP3 28.0/28.2 MHz @0 dBm/tone": {
+    "IIP": 24.29,
+    "OIP": 27.04,
+    "IIP_80steps": 24.3,
+    "conv_delta_dB": 0.02
+   },
+   "IP2 6+7 MHz @-10 dBm/tone": {
+    "IIP": 77.72,
+    "OIP": 80.85,
+    "IIP_80steps": 77.44,
+    "conv_delta_dB": 0.27
+   },
+   "IP2 6+7 MHz @0 dBm/tone": {
+    "IIP": 75.65,
+    "OIP": 78.76,
+    "IIP_80steps": 75.7,
+    "conv_delta_dB": 0.05
+   },
+   "IP2 0.6+1.0 MHz @-10 dBm/tone": {
+    "IIP": 80.75,
+    "OIP": 83.91,
+    "IIP_80steps": 80.3,
+    "conv_delta_dB": 0.45
+   },
+   "IP2 0.6+1.0 MHz @0 dBm/tone": {
+    "IIP": 75.99,
+    "OIP": 79.12,
+    "IIP_80steps": 75.89,
+    "conv_delta_dB": 0.11
    }
   },
   "P1dB_7MHz": {
-   "input": 10,
-   "output": 12.1
+   "input_dBm": 9.81,
+   "output_dBm": 11.93
   }
  },
- "C_+5.5dB": {
-  "op": {
-   "v(n4)": -7.772e-25,
-   "v(bn)": 2.358085,
-   "v(bp)": 7.541803,
-   "v(x)": 4.861219,
-   "v(d1)": 5.751663,
-   "v(d2)": 3.980506,
-   "v(out)": 4.866729,
-   "v(vcf)": 9.718991,
-   "@q1n[ic]": 0.03401874,
-   "@q1p[ic]": -0.0339393,
-   "@q2a[ic]": -0.0113327,
-   "@q3a[ic]": 0.01081978,
-   "@q2[ic]": 0.03851255,
-   "@q3[ic]": -0.0384455,
-   "i(vcc)": -0.0956883
+ "C": {
+  "build": "C",
+  "parts": {
+   "RE1": 47,
+   "RE2": 47,
+   "RF": 330,
+   "RLX": 220
   },
-  "gain": {
-   "0.01MHz": 5.52,
+  "status": {
+   "op": "ok",
+   "ac": "ok",
+   "noise": "ok",
+   "two-tone": "ok",
+   "p1db": "ok"
+  },
+  "op": {
+   "v(x)": 4.82,
+   "v(out)": 4.82,
+   "v(d1)": 5.71,
+   "v(d2)": 3.94,
+   "v(bn)": 2.34,
+   "v(bp)": 7.47,
+   "v(vcf)": 9.63,
+   "v(vcc)": 9.81,
+   "@q1n[ic]": 33.59,
+   "@q1p[ic]": -33.52,
+   "@q2a[ic]": -11.21,
+   "@q3a[ic]": 10.71,
+   "@q2[ic]": 38.03,
+   "@q3[ic]": -37.96,
+   "Irail_mA": 94.53
+  },
+  "op_full_supply": {
+   "rail_V": 9.81,
+   "input_mA": 99.75
+  },
+  "gain_dB": {
+   "0.01MHz": 5.51,
+   "0.1MHz": 5.52,
    "1MHz": 5.52,
    "10MHz": 5.45,
-   "30MHz": 4.96,
+   "30MHz": 4.95,
    "50MHz": 4.01
   },
-  "flatness_10k_50M": [
-   4.2,
+  "gain_range_10k_50M_dB": [
+   4.19,
    5.52
   ],
-  "S11_max_10k_50M": -20.4,
-  "S22_max_10k_50M": -23.6,
-  "iso": {
-   "1MHz": -34.2,
-   "10MHz": -34.0,
+  "S11_max_10k_50M_dB": -20.4,
+  "S22_max_10k_50M_dB": -23.62,
+  "port_isolation_dB": {
+   "1MHz": -34.22,
+   "10MHz": -34.01,
    "30MHz": -32.3,
    "50MHz": -29.2
   },
-  "rev_iso": {
-   "1MHz": -108.6,
-   "10MHz": -81.4,
-   "30MHz": -62.8,
-   "50MHz": -54.0
+  "reverse_isolation_dB": {
+   "1MHz": -108.63,
+   "10MHz": -81.42,
+   "30MHz": -62.77,
+   "50MHz": -54.01
   },
-  "rej": {
-   "88MHz": -33.9,
-   "100MHz": -43.1,
-   "108MHz": -47.6
+  "rejection_dB": {
+   "88MHz": 33.96,
+   "100MHz": 43.12,
+   "108MHz": 47.64,
+   "150MHz": 74.37
   },
-  "NF": {
-   "1MHz": 6.78,
-   "10MHz": 6.93,
-   "30MHz": 7.95,
-   "50MHz": 9.53
+  "NF_dB": {
+   "1MHz": 6.76,
+   "10MHz": 6.91,
+   "30MHz": 7.93,
+   "50MHz": 9.5
   },
-  "NF_top10MHz": [
+  "NF_contributors_10MHz_pct": [
    [
-    "q1p",
+    "rgin",
     20.4
    ],
    [
-    "rgin",
+    "q1p",
     20.3
    ],
    [
     "q1n",
-    15.5
+    15.4
    ],
    [
     "rf",
@@ -310,11 +466,11 @@
    ],
    [
     "re1",
-    9.1
+    9.2
    ],
    [
     "re2",
-    9.0
+    9.1
    ],
    [
     "rs1",
@@ -326,34 +482,82 @@
    ]
   ],
   "IM": {
-   "IP3_1MHz": {
-    "OIP3": 33.0,
-    "IIP3": 27.5
+   "IP3 1.0/1.2 MHz @-10 dBm/tone": {
+    "IIP": 28.38,
+    "OIP": 33.9,
+    "IIP_80steps": 28.22,
+    "conv_delta_dB": 0.16
    },
-   "IP3_7MHz": {
-    "OIP3": 32.8,
-    "IIP3": 27.3
+   "IP3 1.0/1.2 MHz @0 dBm/tone": {
+    "IIP": 21.78,
+    "OIP": 27.23,
+    "IIP_80steps": 21.79,
+    "conv_delta_dB": 0.01
    },
-   "IP3_14MHz": {
-    "OIP3": 31.1,
-    "IIP3": 25.7
+   "IP3 7.0/7.2 MHz @-10 dBm/tone": {
+    "IIP": 27.13,
+    "OIP": 32.61,
+    "IIP_80steps": 27.11,
+    "conv_delta_dB": 0.01
    },
-   "IP3_28MHz": {
-    "OIP3": 28.6,
-    "IIP3": 23.6
+   "IP3 7.0/7.2 MHz @0 dBm/tone": {
+    "IIP": 20.82,
+    "OIP": 26.23,
+    "IIP_80steps": 20.83,
+    "conv_delta_dB": 0.01
    },
-   "IP2_6+7MHz": {
-    "OIP2": 76.9,
-    "IIP2": 71.4
+   "IP3 14.0/14.2 MHz @-10 dBm/tone": {
+    "IIP": 25.5,
+    "OIP": 30.89,
+    "IIP_80steps": 25.47,
+    "conv_delta_dB": 0.03
    },
-   "IP2_0.6+1.0MHz": {
-    "OIP2": 76.3,
-    "IIP2": 70.8
+   "IP3 14.0/14.2 MHz @0 dBm/tone": {
+    "IIP": 20.46,
+    "OIP": 25.77,
+    "IIP_80steps": 20.47,
+    "conv_delta_dB": 0.01
+   },
+   "IP3 28.0/28.2 MHz @-10 dBm/tone": {
+    "IIP": 23.48,
+    "OIP": 28.49,
+    "IIP_80steps": 23.49,
+    "conv_delta_dB": 0.01
+   },
+   "IP3 28.0/28.2 MHz @0 dBm/tone": {
+    "IIP": 20.55,
+    "OIP": 25.46,
+    "IIP_80steps": 20.57,
+    "conv_delta_dB": 0.02
+   },
+   "IP2 6+7 MHz @-10 dBm/tone": {
+    "IIP": 76.74,
+    "OIP": 82.23,
+    "IIP_80steps": 76.33,
+    "conv_delta_dB": 0.42
+   },
+   "IP2 6+7 MHz @0 dBm/tone": {
+    "IIP": 43.68,
+    "OIP": 49.09,
+    "IIP_80steps": 43.69,
+    "conv_delta_dB": 0.01
+   },
+   "IP2 0.6+1.0 MHz @-10 dBm/tone": {
+    "IIP": 77.41,
+    "OIP": 82.93,
+    "IIP_80steps": 76.99,
+    "conv_delta_dB": 0.43
+   },
+   "IP2 0.6+1.0 MHz @0 dBm/tone": {
+    "IIP": 43.65,
+    "OIP": 49.09,
+    "IIP_80steps": 43.66,
+    "conv_delta_dB": 0.01
    }
   },
   "P1dB_7MHz": {
-   "input": 10,
-   "output": 13.0
+   "input_dBm": 8.08,
+   "output_dBm": 12.55
   }
  }
 }

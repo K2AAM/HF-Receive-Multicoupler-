@@ -1,60 +1,85 @@
 # HF Receive Multicoupler — Rev B
 
-One antenna (an active receive loop such as the LZ1AQ AAA-1C or W6LVP) feeding four receivers: an RX888 or RSPdx plus vintage communications receivers. Through-hole, no hand-wound transformers, 13.8 V supply.
+One antenna (an active receive loop such as the LZ1AQ AAA-1C or W6LVP) feeding four receivers: an RX888 or RSPdx plus vintage communications receivers. Four ports, through-hole, no hand-wound transformers, 13.8 V supply.
 
-**Status:** design and simulation only. Nothing here has been built or measured yet. All performance numbers are from ngspice with approximate transistor models (see *Model limits*). Treat them as estimates until the hardware is measured.
+**Status:** design and simulation only. Nothing here has been built or measured yet. All performance numbers are ngspice simulations with approximate transistor models. Treat them as estimates until the hardware is measured. The second verification pass ([`docs/review2-response.md`](docs/review2-response.md)) lists what is supported, what is not, and what needs bench work.
 
 ![schematic](hardware/schematic_revB.png)
 
-## What changed from Rev A
+## Simulated performance, build A (recommended)
 
-| Rev A problem | Rev B fix |
-| --- | --- |
-| 2N5160, 2N5109 and 2N3866 are discontinued (Central Semiconductor PDN01114, 2019); 2N5160 only from brokers at ~US$23–52 | Every transistor is a 2N3904 or 2N3906 (stocked jellybeans with published SPICE models) |
-| A swap to 2N4401/2N4403 followers drooped 3 dB by 50 MHz and gave only 26 dB isolation at 30 MHz (simulated) | Output stage is a **diamond buffer** (complementary pre-drivers driving complementary outputs), which lowers the star-node impedance at HF |
-| 5-pole LPF gave only 8.3 dB at 88 MHz | 7-pole LPF (43p–220n–100p–270n–100p–220n–43p): 36 dB at 88 MHz, 45 dB at 100 MHz |
-| 11 V regulator then 10 Ω, so the rail was really ~10.1 V; doc numbers assumed 11 V | Rail is 9.9 V (LM317 at 9.93 V, then a 100 µH choke); all bias was recalculated at 9.9 V |
-| Bias-T test (100 Ω at 13.4 V = 134 mA) exceeded its 100 mA PTC | Bias-T removed. Neither loop needs it (W6LVP has its own inserter; the AAA-1C controller powers the amplifier) |
-| Electrolytic ‖ 100 nF in series signal paths formed a parallel tank (~5 MHz match dip) | Series coupling caps are single film capacitors |
-| Trimmer-set output bias (a failed trimmer could cause runaway) | No trimmer; output current set by fixed RX1/RX2 |
-
-## Simulated performance (recommended +1.7 dB build)
-
-Conditions: 50 Ω source and four 50 Ω loads, measured at J2. Two tones of −10 dBm each, 200 kHz apart. Parasitic model on (lead and ESL inductances, pad capacitances, film-cap ESL). LPF inductor Q = 40.
+Conditions: 50 Ω source, four 50 Ω loads, measured at J2. Nominal parts, 9.81 V rail.
 
 | Parameter | 1 MHz | 7–10 MHz | 28–30 MHz | 50 MHz |
 | --- | --- | --- | --- | --- |
-| Gain (dB) | +1.73 | +1.69 | +1.43 | +0.84 |
+| Gain (dB) | +1.72 | +1.69 | +1.42 | +0.83 |
 | Port-to-port isolation (dB) | 34.2 | 34.0 | 32.3 | 29.4 |
 | Output-to-input isolation (dB) | 107 | 80 | 61 | 52 |
-| NF (dB, excludes receiver load noise) | 8.2 | 8.3 | 9.2 | 10.6 |
-| IIP3 / OIP3 (dBm) | +30.7 / +32.4 | +30.1 / +31.9 (7 MHz) | +27.4 / +28.9 (28 MHz) | — |
+| NF (dB, excludes the receiver's own load noise) | 8.2 | 8.3 | 9.2 | 10.6 |
+| IIP3 (dBm, −10 dBm tones) | +31.9 | +30.8 (7 MHz) | +27.1 (28 MHz) | — |
 
-- Gain at 10 kHz: +1.72 dB. S11 ≤ −23 dB and S22 ≤ −24 dB from 10 kHz to 50 MHz.
-- FM rejection: −36 dB at 88 MHz, −45 dB at 100 MHz, −49 dB at 108 MHz.
-- IIP2: +70 dBm (6 + 7 MHz), +69 dBm (0.6 + 1.0 MHz). The Monte Carlo spread is +61 to +86 dBm.
-- Output P1dB: about +12 dBm per port at 7 MHz, with all four ports loaded.
-- Supply: 91 mA at the 9.9 V rail, about 96 mA from 13.8 V.
+**Other figures:**
 
-Full numbers, including the +3 dB and +5.5 dB options, are in [`sim/results/summary.json`](sim/results/summary.json). The point-by-point review answers are in [`docs/review-response.md`](docs/review-response.md).
+- **Match:** S11 ≤ −23 dB and S22 ≤ −23.7 dB from 10 kHz to 50 MHz.
+- **FM rejection:** 36 dB at 88 MHz, 45 dB at 100 MHz.
+- **IIP2:** about +79 dBm (6 + 7 MHz) and +79 to +82 dBm (0.6 + 1.0 MHz).
+- **Output P1dB:** +11.7 dBm at 7 MHz.
+- **Supply:** 95 mA from 13.8 V.
+
+**Tolerance spread** (200-run Monte Carlo, every part independent, published tolerances, LPF inductors VNA-selected to ±3 %):
+
+- gain at 1 MHz: 1.54–1.89 dB
+- worst S11: −19.4 dB
+- NF at 10 MHz: 8.1–9.1 dB
+- IIP3 at 7 MHz: +29.1 to +31.8 dBm
+- IIP2: +60 to +88 dBm (depends on NPN/PNP matching)
+- rail current: 79–97 mA
+
+**If you skip inductor selection,** expect S11 as poor as about −12 dB and up to ~1 dB of extra droop at 50 MHz.
+
+Builds B (+3.2 dB) and C (+5.5 dB) are in [`sim/results/summary.json`](sim/results/summary.json). Build C loses intercept quickly with signals near 0 dBm.
+
+## Repository layout
+
+| Path | Contents |
+| --- | --- |
+| `hardware/` | Schematic (`schematic_revB.png/.svg`, generated by `sch_revb.py`); sourced BOM (`BOM_revB.csv`) |
+| `docs/review2-response.md` | Current verification status (supersedes parts of `review-response.md`) |
+| `docs/bringup-and-test.md` | Inductor selection, power-only test with dummy load, bring-up and bench tests |
+| `docs/layout-guidance.md` | PCB layout rules |
+| `sim/scripts/gen.py` | Single netlist generator; builds A/B/C in `BUILDS`; checked simulation runner |
+| `sim/spice/*.cir` | Standalone decks for build A (exported by `export_netlists.py`) |
+| `sim/results/` | All generated results |
 
 ## Running the simulations
 
-Requires ngspice 42 or later and Python 3 with numpy and matplotlib.
+Requires ngspice 42 or later and Python 3 with numpy and matplotlib. Run from `sim/scripts`:
 
 ```
-cd sim/spice && ngspice tb_ac_forward.cir          # interactive plot of S21/S11
-cd sim/scripts && python3 run_all.py               # gain options A/B/C: AC, NF, IP3, IP2, P1dB -> results/summary.json
-python3 mc.py 80 40                                # Monte Carlo (80 runs, 40 with two-tone)
-python3 thermal.py; python3 stab_z.py              # thermal tracking; port/input real-part stability scan
+python3 test_harness.py       # 15 failure-handling regression checks
+python3 run_all.py            # builds A, B, C: op, AC, NF, IP3/IP2 (80 and 160 steps), P1dB -> summary.json
+python3 convergence.py        # two-tone timestep / reltol / method study
+python3 mc.py 200 200         # Monte Carlo + corners -> mc_A.json
+python3 lpf_study.py 100      # LPF tolerance options
+python3 stability.py A        # 5-port S-matrix mu test + 33 cable-kick cases (also B, C); then mu_bands.py A
+python3 supply.py             # start-up, headroom, rail impedance, ripple bound, fault, dummy load
+python3 thermal.py; python3 export_netlists.py; python3 plot.py
 ```
 
-`sim/scripts/gen.py` generates every netlist from one parameter dictionary (`BASE`). The `sim/spice/*.cir` files are standalone exports of the recommended values.
+Every run uses its own temporary directory and is rejected on any of these:
 
-Netlist-to-schematic name map: CIN1 = C1, CBN1/CBP1 = C2/C3, CF1–CF4 = C4–C7, LF1–LF3 = L1–L3, CFB1 = C8, CLX = C9, REO1/REO2 = RE3/RE4, RCOL = RC, CO1A–CO4A = C10–C13.
+- non-zero exit
+- simulator error text
+- missing completion marker
+- a missing, stale, empty, non-finite or truncated output
+
+Failures are counted and reported, never skipped.
+
+**Name map** (generator → schematic): CIN1 = C1, CBN/CBP = C2/C3, CF1–CF4 = C4–C7, LF1–LF3 = L1–L3, CFB = C8, CLX = C9, RLX = RL, REO1/REO2 = RE3/RE4, RCOL = RC, CO1–CO4 = C10–C13, CRM/CRMP = C14/C15, CU1O = C23.
 
 ## Model limits
 
-- 2N3904/2N3906 models are the simplified NXP-style models in the LTspice library. Base resistance, junction capacitances and fT are approximate, and the models have no fT roll-off with current beyond IKF.
-- Absolute IP3 can differ by several dB from hardware. IP2 depends on NPN/PNP matching, which the model cannot predict, so it is reported as a Monte Carlo range.
-- Some cable-kick transient runs stopped on ngspice "timestep too small" errors (lossless T-lines). Every run that completed decayed. The frequency-domain check (Re Z > 0 at the input and every port, to 2 GHz, for open, short, 100 pF and 1 µH loads) is the primary stability evidence.
+- **Transistor models:** 2N3904/2N3906 are simplified Gummel-Poon models from the LTspice library. Absolute IP3/IP2 can differ from hardware by several dB, and IP2 depends on device matching.
+- **50 MHz gain:** depends on the real collector capacitance. With CJC 40 % higher than modelled, gain at 50 MHz drops to +0.2 dB.
+- **Regulator model:** the LM317 is behavioural, with ideal line rejection and typical dropout.
+- **Stability:** checked to 2 GHz with lumped parasitics. The models are unreliable above ~500 MHz, so a hardware oscillation check is required.

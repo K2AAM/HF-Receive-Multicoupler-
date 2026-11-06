@@ -1,38 +1,76 @@
-import gen,numpy as np,re,json,sys
-rng=np.random.default_rng(12345)
-lib=open('models_bjt.lib').read()
-def model_line(base,newname,bfk,isk):
-    m=re.search(r"\.model "+base+r" (NPN|PNP)\((.*)\)",lib)
-    typ,par=m.group(1),m.group(2)
-    def scale(par,key,k):
-        return re.sub(r"(?i)\b("+key+r")=([-\d.eEkKfFpPnNuUmM]+)", lambda mm: f"{mm.group(1)}={float(gen_val(mm.group(2)))*k:g}", par, count=1)
-    par=scale(par,'BF',bfk); par=scale(par,'IS',isk)
-    return f".model {newname} {typ}({par})"
-def gen_val(s):
-    s=s.lower(); mult={'f':1e-15,'p':1e-12,'n':1e-9,'u':1e-6,'m':1e-3,'k':1e3}
-    return float(s[:-1])*mult[s[-1]] if s[-1] in mult else float(s)
-N=int(sys.argv[1]) if len(sys.argv)>1 else 60
-B=gen.BASE; out=[]
-for run in range(N):
-    P={}; models=[]
-    for inst,key,base in (('q1n','QN','2N3904'),('q1p','QP','2N3906'),('q2a','QDP','2N3906'),('q3a','QDN','2N3904'),('q2','QF','2N3904'),('q3','QG','2N3906')):
-        bfk=np.exp(rng.uniform(np.log(0.5),np.log(1.5))); isk=np.exp(rng.uniform(np.log(0.6),np.log(1.7)))
-        nm=f"M{inst}"; models.append(model_line(base,nm,bfk,isk)); P[key]=nm
-    P['MODELS']="\n".join(models)
-    for k in ('RE','RF','R1','R2','R3','R4','RL','RPU','RPD','RX','REO','RS','RBL'):
-        P[k]=B[k]*(1+rng.normal(0,0.01/3))
-    for k in ('LC1','LC2'): P[k]=B[k]*(1+rng.uniform(-0.05,0.05))
-    for k in ('LL','LL2'): P[k]=B[k]*(1+rng.uniform(-0.05,0.05))
-    for k in ('CIN','CBASE','CFBK','CPORT'): P[k]=B[k]*(1+rng.uniform(-0.1,0.1))
-    P['LQ']=rng.uniform(40,80); P['TEMP']=float(rng.choice([0,27,50]))
-    d,_=gen.op(P)
-    r=gen.ac(P,1e4,60e6,10); f=r['f']; m=f<=50.1e6
-    g=lambda F,a: float(a[np.argmin(abs(f-F))])
-    row=dict(run=run,T=P['TEMP'],Iq1n=d['@q1n[ic]']*1e3,Iq1p=-d['@q1p[ic]']*1e3,Iq2=d['@q2[ic]']*1e3,Iq3=-d['@q3[ic]']*1e3,Itot=-d['i(vcc)']*1e3,Vout=d['v(out)'],
-             G1=g(1e6,r['S21']),G30=g(3e7,r['S21']),G50=g(5e7,r['S21']),S11max=float(r['S11'][m].max()),iso30=g(3e7,r['iso']),iso50=g(5e7,r['iso']),rev30=g(3e7,r['rev']))
-    if run<int(sys.argv[2] if len(sys.argv)>2 else 30):
-        t=gen.twotone(P,7e6,7.2e6,-10); row['IIP3_7']=t['iip3']
-        t=gen.twotone(P,6e6,7e6,-10); row['IIP2_67']=t['iip2']
-        t=gen.twotone(P,0.6e6,1.0e6,-10,T=50e-6); row['IIP2_MW']=t['iip2']
-    out.append(row); print(json.dumps({k:round(v,2) if isinstance(v,float) else v for k,v in row.items()}),flush=True)
-json.dump(out,open('mc.json','w'),indent=1)
+"""Monte Carlo and corner analysis, Rev B build A. Usage: python3 mc.py [N_full] [N_unbinned]
+Every part varies independently with its published tolerance (tolerance.TOL_SOURCES).
+Failed simulations are counted and listed; they are never silently dropped."""
+import gen, tolerance as T, numpy as np, json, sys, multiprocessing as mp
+NF = int(sys.argv[1]) if len(sys.argv) > 1 else 200
+NU = int(sys.argv[2]) if len(sys.argv) > 2 else 200
+
+def rf_metrics(P):
+    d = gen.op(P)
+    r = gen.ac(P, 1e4, 120e6, 25); f = r['f']; b = (f >= 1e4) & (f <= 50.01e6)
+    g = lambda a, F: float(a[np.argmin(abs(f - F))])
+    return dict(T=P['TEMP'], VCC=round(P['VCC'], 3), Itot_mA=-d['i(vcc)'] * 1e3, Iq1n_mA=d['@q1n[ic]'] * 1e3, Iq1p_mA=-d['@q1p[ic]'] * 1e3,
+                Iout_mA=d['@q2[ic]'] * 1e3, Vout=d['v(out)'], G1=g(r['S21'], 1e6), G10=g(r['S21'], 10e6), G30=g(r['S21'], 30e6),
+                G50=g(r['S21'], 50e6), flat=float(r['S21'][b].max() - r['S21'][b].min()), S11max=float(r['S11'][b].max()),
+                S22max=float(r['S22'][b].max()), iso30=g(r['iso'], 30e6), rev30=g(r['rev'], 30e6), rej88=-g(r['S21'], 88e6))
+
+def full_metrics(P):
+    m = rf_metrics(P)
+    m['NF10'] = gen.nf_breakdown(P, (10e6,))[10e6]['NF']
+    m['IIP3_7'] = gen.twotone(P, 7e6, 7.2e6, -10)['iip3']
+    m['IIP2_67'] = gen.twotone(P, 6e6, 7e6, -10)['iip2']
+    return m
+
+def job(args):
+    kind, i, seed, opts = args
+    rng = np.random.default_rng([seed, i])
+    P = T.sample(rng, "A", **opts)
+    try:
+        return dict(run=i, status="ok", **(full_metrics(P) if kind == "full" else rf_metrics(P)))
+    except gen.SimError as e:
+        return dict(run=i, status="FAILED", error=str(e)[:300])
+
+LOWER_BAD = {"G1", "G10", "G30", "G50", "rej88", "IIP3_7", "IIP2_67"}   # smaller is worse
+def stats(rows):
+    ok = [r for r in rows if r['status'] == 'ok']
+    keys = [k for k in ok[0] if k not in ('run', 'status')]
+    s = {}
+    for k in keys:
+        v = np.array([r[k] for r in ok], float)
+        s[k] = dict(min=round(float(v.min()), 3), p5=round(float(np.percentile(v, 5)), 3), median=round(float(np.median(v)), 3),
+                    p95=round(float(np.percentile(v, 95)), 3), max=round(float(v.max()), 3))
+    return dict(n=len(rows), ok=len(ok), failed=[r for r in rows if r['status'] != 'ok'], stats=s)
+
+def corners():
+    out = {}
+    base = gen.params("A")
+    cases = {"nominal": {}, "T=0C": dict(TEMP=0), "T=50C": dict(TEMP=50),
+             "rail -4.5%": dict(VCC=base['VCC'] * 0.955), "rail +4.5%": dict(VCC=base['VCC'] * 1.045),
+             "all hFE=100": T.corner_models(bf=100 / 300) | {}, "TF x0.7": T.corner_models(tf=0.7), "TF x1.4": T.corner_models(tf=1.4),
+             "CJC x0.7": T.corner_models(cjc=0.7), "CJC x1.4": T.corner_models(cjc=1.4)}
+    # hFE=100 corner: scale each device's BF to 100 (PNP model BF=200, NPN 300)
+    lines = []; over = {}
+    for key, b in T.DEVICES:
+        nm = f"H_{key}"; lines.append(T.model_line(b, nm, {"BF": 100 / T.MODEL_BF[b]})); over[key] = nm
+    over['MODELS'] = "\n".join(lines); cases["all hFE=100"] = over
+    lines = []; over = {}
+    for key, b in T.DEVICES:
+        nm = f"K_{key}"; lines.append(T.model_line(b, nm, {"BF": 300 / T.MODEL_BF[b]})); over[key] = nm
+    over['MODELS'] = "\n".join(lines); cases["all hFE=300"] = over
+    for name, ov in cases.items():
+        try: out[name] = dict(status="ok", **full_metrics(gen.params("A", **ov)))
+        except gen.SimError as e: out[name] = dict(status="FAILED", error=str(e)[:300])
+        print("corner", name, {k: (round(v, 2) if isinstance(v, float) else v) for k, v in out[name].items()}, flush=True)
+    return out
+
+if __name__ == "__main__":
+    res = dict(sources={k: v[1] for k, v in T.TOL_SOURCES.items()}, model_provenance=T.MODEL_PROVENANCE)
+    res["corners"] = corners()
+    with mp.Pool(max(1, mp.cpu_count())) as pool:
+        rows = pool.map(job, [("full", i, 2026, dict(L="L_selected", C="C_C0G_G")) for i in range(NF)])
+        res["mc_recommended_binnedL_2pctC"] = stats(rows); res["mc_recommended_rows"] = rows
+        print("recommended", json.dumps(res["mc_recommended_binnedL_2pctC"]["stats"]), "failed", len(res["mc_recommended_binnedL_2pctC"]["failed"]), flush=True)
+        rows = pool.map(job, [("rf", i, 4242, dict(L="L_78FR_K", C="C_C0G_G")) for i in range(NU)])
+        res["mc_unbinnedL_2pctC"] = stats(rows)
+        print("unbinned", json.dumps(res["mc_unbinnedL_2pctC"]["stats"]), "failed", len(res["mc_unbinnedL_2pctC"]["failed"]), flush=True)
+    json.dump(res, open("../results/mc_A.json", "w"), indent=1)
