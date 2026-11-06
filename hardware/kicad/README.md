@@ -57,7 +57,8 @@ The files were made with KiCad 7.0.11 and open in KiCad 7 or later.
 | `/usr/bin/python3 drc.py hfmc.kicad_pcb drc.rpt` | KiCad DRC | `drc.rpt` |
 | `python3 check_place.py` | Courtyard overlaps | `check_place.txt` |
 | `/usr/bin/python3 layout_report.py` | Branch lengths, bypass distances, LPF geometry | `layout_report.json` |
-| `/usr/bin/python3 enclosure.py` | 1590BB fit; contains the ASSUMED enclosure numbers | `enclosure_report.txt` |
+| `/usr/bin/python3 enclosure.py` | Hammond 1590C fit, insertion path and drilling. Each value is tagged MFR / DWG / CALC / ASSUME | `enclosure_report.txt`, `enclosure.json`, `img/enclosure_*.png`, `img/drill_*.png`, `drill_drawing_1590C.pdf` |
+| `bash erc_native.sh` | KiCad 7 eeschema native ERC, driven under Xvfb with xdotool (KiCad 7 has no CLI ERC) | `erc_native.rpt`, `erc_native.png` |
 | `/usr/bin/python3 layout_parasitics.py` | Estimated trace capacitance added to the build-A simulation (needs ngspice) | `layout_parasitics.json` |
 
 To run headless, set `KICAD7_FOOTPRINT_DIR=/usr/share/kicad/footprints`.

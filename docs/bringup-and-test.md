@@ -93,12 +93,15 @@ The full board description is in [`pcb-prototype-A.md`](pcb-prototype-A.md). All
 
 ### P1. Before soldering
 - Select L1–L3 (step 0). Write the measured values on the silkscreen next to each part.
-- Check the 1590BB against the assumptions in `pcb-prototype-A.md` section 5: floor thickness, depth, bosses. Then drill:
-  - the floor holes for M3 × 4 mm brass spacers, using the bare PCB as a template;
-  - the front-wall BNC holes: 4 × at x = −30, −10, +10, +30 mm from the box centre, centre 14.2 mm above the inside floor;
-  - the left-wall input BNC hole: 8 mm toward the back wall, centre 16.5 mm up;
-  - the back-wall DC jack hole: x = +36 mm, centre 19.5 mm up.
-- Check the panel cut-outs on the connector drawings before drilling.
+- Machine the Hammond 1590C to `hardware/kicad/drill_drawing_1590C.pdf` (`pcb-prototype-A.md` section 5.6). First measure the items in section 5.7: floor, draft, pillars, and the connector cut-outs.
+  - **Datums:** X/Y from the centre of the four cover-screw holes. Heights are Z_out, measured from the **outside** bottom face; the inside floor is at Z_out 2.25. Drill wall features parallel to the floor.
+  - **Front wall (J2–J5):**
+    - a flat inside strip 82 × 22 mm and an outside strip 80 × 20 mm, both perpendicular to the floor, leaving about 1.36 mm of wall;
+    - then four obround slots 12.9 wide × 15.5 high at x = −30, −10, +10, +30, centre Z_out 18.45.
+  - **Left end wall (J1):** a D-hole 11.1 / 10.3 mm at y = −8 (toward the back wall), Z_out 26.25.
+  - **Back wall (J6):** a D-hole 8.00 / 7.37 mm at x = +36 (U1 end), Z_out 28.25.
+  - **Floor:** five Ø4.2 holes, transferred from the board (P2 step 5).
+- Before soldering anything, dry-run the tilted insertion with the bare PCB and spacers (P2 step 5).
 
 ### P2. Assembly order
 The order is the same as `layout-guidance.md`: supply first, then output stage and ports, then gain stage, then input and LPF.
@@ -114,10 +117,16 @@ The order is the same as `layout-guidance.md`: supply first, then output stage a
 3. **Gain stage:** Q1, Q2 and their resistors and capacitors, plus TP2.
 4. **Input and LPF:**
    - Fit GDT1, C1, R1, D1–D4, C4–C7 and L1–L3.
-   - Fit J1 as about 60 mm of RG-316: centre to J1 pad 1, braid to both J1 pads 2.
-5. **Into the box:**
-   - Fit spacers and screws at MH1–MH5.
-   - Tighten the BNC nuts before the spacer screws.
+   - Solder about 60 mm of RG-316 to the J1 pads (centre to pad 1, braid to both pads 2). Leave the panel jack off the free end for now.
+5. **Into the box (lid off; J1 and J6 jacks not yet fitted):**
+   - Screw the five M3 × 6 mm brass spacers to the board: M3 × 5 screws with washers from the top.
+   - Hold the board BNC end down at about 30°, with the back edge above the rim. Feed the four BNC threads into the slots, then lower the back edge as the threads pass through. Level the board onto the floor. Do not force it: if a part catches, stop and check the slot and strip dimensions.
+   - On each BNC, fit the M12 DIN 433 washer, the supplied lock washer and nut from outside. Tighten the nuts until each housing face sits on the inside strip.
+   - First time only: mark the floor through the spacer threads, take the board out, drill Ø4.2, and refit.
+   - Fit the M3 × 5 floor screws with washers. Tighten them **last**. The Ø4.2 holes let the board stay where the BNC nuts put it, with no bending.
+   - Fit J6 to the back wall and J1 to the left wall. Then terminate the RG-316 and the DC leads to them.
+   - Check the U1 tab: no metal screw, nothing touching the right wall or the lid.
+   - Check continuity: board GND to the box at a bare spot, and to each BNC shell.
 
 ### P3. DC readings at the test points (amplifier powered, bring-up step 2)
 | Reading | Expected (sim) |

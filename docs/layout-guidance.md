@@ -1,10 +1,10 @@
-# Layout guidance (Rev B, through-hole, Hammond 1590BB)
+# Layout guidance (Rev B, through-hole, Hammond 1590C)
 
 The schematic and calculations are settled. These were the guidelines for the KiCad layout. The prototype layout now exists: see [`pcb-prototype-A.md`](pcb-prototype-A.md) for how it follows them and where it deviates (J1 and J6 on different walls; no separate via fence between L1 and L3; GDT ground through the pours).
 
 ## Board and enclosure
 - 2-layer, 1.6 mm FR-4. The bottom layer is an unbroken ground plane, and top-side ground pour is stitched to it with vias every ~5 mm along RF traces.
-- The 1590BB inside is about 112 × 87 mm. Plan a ~100 × 75 mm board with corner mounting holes tied to ground.
+- The 1590C inside is 111.3 × 85.8 mm near the floor (115.1 × 89.6 at the rim; walls drafted 2.25°). Build A uses a 104 × 78 mm board with notched corners, on five grounded M3 × 6 mm brass spacers. See `pcb-prototype-A.md` section 5 for the fit, insertion and drilling. (This guide was first written for the 1590BB.)
 - Put J1 (input) and J6 (DC) on one end wall, and J2–J5 on the opposite wall at ≥ 18 mm spacing, so the input and outputs are physically separated.
 - Bond the board ground to the box at the connector wall: the BNC bulkhead nuts and lock washers do this. Add one more screw near J1 for the GDT ground path.
 

@@ -1,27 +1,242 @@
 {
- "STANDOFF": 4.0,
- "ZB": 5.6,
- "BNC_Z": 14.2,
- "CONN": [
-  [
-   "J1 031-221-RFX (input, left wall)",
-   "left",
-   -8.0,
-   16.5,
-   7.4,
-   7.4,
-   15.0
-  ],
-  [
-   "J6 722A DC jack (back wall)",
-   "back",
-   36.0,
-   19.5,
-   8.0,
-   5.0,
-   16.0
-  ]
+ "spacer": 6.0,
+ "pcb_top": 7.6,
+ "bnc_cl": 16.2,
+ "board_dy": 1.4151156421180744,
+ "y_spotface_in": 43.915115642118074,
+ "y_spotface_out": 45.270709068776625,
+ "panel_at_bnc": 1.355593426658551,
+ "hole_bnc": 15.5,
+ "floor_hole": 4.2,
+ "lip_z": 48.25,
+ "rim_z": 50.25,
+ "floor": 2.25,
+ "J1": [
+  -8.0,
+  24.0
  ],
- "USABLE": 26.0,
- "CAVITY": 27.5
+ "J6": [
+  36.0,
+  26.0
+ ],
+ "mounting_holes": {
+  "MH1": [
+   -38.5,
+   -10.584884357881926
+  ],
+  "MH2": [
+   -46.5,
+   26.415115642118074
+  ],
+  "MH3": [
+   46.5,
+   26.415115642118074
+  ],
+  "MH4": [
+   47.5,
+   -26.384884357881926
+  ],
+  "MH5": [
+   -34.0,
+   11.415115642118074
+  ]
+ },
+ "c1_below_lip": 21.549999999999997,
+ "sources": {
+  "outside length (at rim)": [
+   "119.5",
+   "MFR",
+   ""
+  ],
+  "outside width (at rim)": [
+   "94.0",
+   "MFR",
+   ""
+  ],
+  "body height without lid": [
+   "52.5",
+   "MFR",
+   ""
+  ],
+  "lid thickness": [
+   "4.0",
+   "MFR",
+   ""
+  ],
+  "overall height with lid": [
+   "56.5",
+   "MFR",
+   ""
+  ],
+  "floor thickness": [
+   "2.25",
+   "MFR",
+   ""
+  ],
+  "inside height, floor to underside of lid": [
+   "52.25",
+   "MFR",
+   "lid pocket 2.00 deep (MFR)"
+  ],
+  "inside floor to rim": [
+   "50.25",
+   "CALC",
+   ""
+  ],
+  "inside floor to bottom of lid lip": [
+   "48.25",
+   "DWG",
+   "lid lip projects 2.0 below the rim, 0.57 mm inside the wall"
+  ],
+  "inside length at rim": [
+   "115.14",
+   "MFR",
+   ""
+  ],
+  "inside width at rim": [
+   "89.64",
+   "MFR",
+   ""
+  ],
+  "inside length near floor": [
+   "111.27",
+   "MFR",
+   "DWG: measured 0.96 mm above the floor, at the top of the R1.0 floor fillet"
+  ],
+  "inside width near floor": [
+   "85.77",
+   "MFR",
+   ""
+  ],
+  "height of the near-floor inside dimensions": [
+   "0.96",
+   "DWG",
+   ""
+  ],
+  "inside floor fillet radius": [
+   "1.0",
+   "DWG",
+   ""
+  ],
+  "wall thickness (horizontal)": [
+   "2.18",
+   "DWG",
+   "outer wall drafted parallel to inner; 2.18 at the rim"
+  ],
+  "wall draft tan": [
+   "0.03925745587340236",
+   "CALC",
+   ""
+  ],
+  "cover-screw (6-32) pattern": [
+   "(109.5, 84.0)",
+   "MFR",
+   "screw centres (+-54.75, +-42.00): use as the drilling datum"
+  ],
+  "screw-pillar arc centre": [
+   "(54.82, 42.07)",
+   "DWG",
+   ""
+  ],
+  "screw-pillar radius, worst (near floor)": [
+   "5.94",
+   "DWG",
+   "arcs R4.94 and R5.94 about the pillar centre; 103.64 x 78.14 between pillar faces at the rim (MFR)"
+  ],
+  "031-5431-10RFX centreline above PCB": [
+   "8.6",
+   "MFR",
+   ""
+  ],
+  "031-5431-10RFX housing width": [
+   "14.5",
+   "MFR",
+   ""
+  ],
+  "031-5431-10RFX housing height": [
+   "15.6",
+   "MFR",
+   ""
+  ],
+  "031-5431-10RFX 1/2-28 thread length": [
+   "8.9",
+   "MFR",
+   ""
+  ],
+  "031-5431-10RFX bayonet length beyond thread": [
+   "12.0",
+   "MFR",
+   ""
+  ],
+  "BNC bayonet diameter over lugs": [
+   "11.5",
+   "ASSUME",
+   "BNC jack barrel ~9.6 + lugs; check with calipers"
+  ],
+  "031-5431-10RFX recommended panel hole": [
+   "(12.83, 11.96)",
+   "MFR",
+   "dia / D-flat"
+  ],
+  "031-5431-10RFX max panel thickness": [
+   "5.0",
+   "MFR",
+   ""
+  ],
+  "031-5431-10RFX hex nut": [
+   "15.88",
+   "MFR",
+   ""
+  ],
+  "031-221-RFX panel hole (type U)": [
+   "(11.1, 10.3)",
+   "MFR",
+   "dia / D-flat, Amphenol BNC catalogue table"
+  ],
+  "031-221-RFX max panel thickness": [
+   "3.2",
+   "MFR",
+   ""
+  ],
+  "031-221-RFX hex nut": [
+   "12.7",
+   "MFR",
+   ""
+  ],
+  "031-221-RFX length behind panel incl. nut and solder cup": [
+   "15.0",
+   "ASSUME",
+   "27.0 overall (MFR) less the front part"
+  ],
+  "722A panel hole (5/16-32 bushing)": [
+   "(8.0, 7.37)",
+   "MFR",
+   "dia / flat from Switchcraft 5/16-32 jack drawings (L721A); confirm on the 722A sheet"
+  ],
+  "722A bushing thread length": [
+   "5.46",
+   "MFR",
+   ""
+  ],
+  "722A max panel thickness": [
+   "3.1",
+   "MFR",
+   "distributor listing"
+  ],
+  "722A body + lugs behind panel": [
+   "16.0",
+   "ASSUME",
+   "20.8 overall less bushing; lugs turned horizontal"
+  ],
+  "M3 brass spacer height (Wurth 970060354)": [
+   "6.0",
+   "MFR",
+   ""
+  ],
+  "outside flat washer under the BNC lock washer: DIN 433 M12": [
+   "(13.0, 20.0, 2.0)",
+   "MFR",
+   "ID 13 / OD 20 / t 2, bridges the slot"
+  ]
+ }
 }

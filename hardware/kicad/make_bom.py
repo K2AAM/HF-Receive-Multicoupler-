@@ -22,14 +22,16 @@ for (mpn, val, fp), ps in groups.items():
     rows.append([" ".join(refs), " ".join(d for d, r in zip(docs, refs) if d != r), len(ps), val, mpn, fp, size, notes])
 rows.sort(key=lambda r: refkey(r[0].split()[0]))
 EXTRA = [
- ["(J1 panel)", "", 1, "BNC jack, front-mount bulkhead", "Amphenol RF 031-221-RFX", "panel (left short wall)", "27 mm long, 3/8-32, 12.7 hex nut, max panel 3.2", "Input connector; RG-316 pigtail to J1 pads. Panel hole per Amphenol drawing (verify)"],
+ ["(J1 panel)", "", 1, "BNC jack, front-mount bulkhead", "Amphenol RF 031-221-RFX", "panel, left end wall", "27.0 mm long, 12.7 hex nut, max panel 3.2", "Input connector; RG-316 pigtail to J1 pads. D-hole 11.1 / 10.3 flat (Amphenol type U, confirm on drawing). Fit after the PCB"],
  ["(J1 cable)", "", 1, "RG-316 coax, ~60 mm", "any RG-316 (e.g. Belden 83284)", "", "", "Centre to J1 pad 1, braid to J1 pads 2"],
- ["(J6 panel)", "", 1, "DC power jack 2.1 mm (2.0 mm pin)", "Switchcraft 722A", "panel (back wall)", "approx. 23 mm long, solder lugs", "Centre positive. Wire to J6 pads (1 = +13.8 V, 2 = GND)"],
- ["MH1-MH5", "", 5, "M3 x 4 mm round spacer, brass", "e.g. Keystone or Wurth M3 x 4 mm (choose; 4.0 mm length is the requirement)", "MountingHole_3.2mm_M3_Pad_Via", "", "Height set by C1 vs lid clearance; metal spacers bond board GND to the box at every hole"],
- ["MH1-MH5", "", 10, "M3 screw, pan head, 6 mm (top) + 6-8 mm (through floor)", "any stainless M3", "", "", "Countersunk or pan through the floor; check length vs floor thickness"],
+ ["(J6 panel)", "", 1, "DC power jack 2.1 mm (2.0 mm pin)", "Switchcraft 722A", "panel, back wall", "20.8 mm long, 5/16-32 bushing, solder lugs", "Centre positive. Wire to J6 pads (1 = +13.8 V, 2 = GND). D-hole 8.00 / 7.37 flat (confirm on drawing). Fit after the PCB"],
+ ["MH1-MH5", "", 5, "M3 x 6 mm hex spacer, brass, female-female, 5 mm hex", "Wurth 970060354", "MountingHole_3.2mm_M3_Pad_Via", "", "Bonds board GND to the box floor at every hole"],
+ ["MH1-MH5", "", 10, "M3 x 5 pan-head screw, stainless", "any ISO 7045 M3 x 5", "", "", "5 on top through the PCB, 5 from below through the dia 4.2 floor holes"],
+ ["MH1-MH5", "", 10, "M3 flat washer (DIN 125 3.2)", "any", "", "", "Under each screw head; the floor ones bridge the oversize holes"],
+ ["J2-J5", "", 4, "M12 flat washer, steel, ID 13 / OD 20 / t 2 (DIN 433)", "any DIN 433 M12 zinc-plated", "", "", "Outside, under the supplied lock washer and nut: bridges the 12.9 x 15.5 wall slot"],
  ["Q3/Q5, Q4/Q6", "Q2A/Q2, Q3A/Q3", 1, "thermally conductive epoxy or cyanoacrylate + heat-shrink", "e.g. Arctic Silver thermal adhesive", "", "", "Glue the flat faces of each pair together"],
  ["U1", "", 1, "M3 x 8 nylon screw + nut (optional)", "any nylon M3", "", "", "Tab is VOUT; do not use a metal screw"],
- ["Enclosure", "", 1, "Hammond 1590BB", "Hammond 1590BB", "", "119.5 x 94 x 34 mm with lid", "Drill per docs/pcb-mechanical.md"],
+ ["Enclosure", "", 1, "Hammond 1590C die-cast aluminium, natural", "Hammond 1590C", "", "119.5 x 94 x 56.5 mm with lid (inside 52.25 high)", "Machine and drill per hardware/kicad/drill_drawing_1590C.pdf; 1590CBK (black) needs the coating removed at spacer seats and BNC strips"],
 ]
 with open("BOM_prototype_A.csv", "w", newline="") as f:
     w = csv.writer(f)

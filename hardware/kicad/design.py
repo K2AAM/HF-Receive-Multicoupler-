@@ -27,7 +27,7 @@ def add(ref, sym, val, fp, pins, mpn, note="", gen=None): P.append(dict(ref=ref,
 
 # ---- input
 add("J1", ("Connector_Generic", "Conn_01x02"), "ANT IN (panel BNC pigtail)", FP["COAXPADS"], {"1": "IN", "2": "GND"},
-    "Amphenol RF 031-221-RFX (panel BNC, wired with ~60 mm RG-316)", "Panel jack on the LEFT short wall (see docs/pcb-mechanical.md); RG-316 pigtail to these pads, braid to both GND pads")
+    "Amphenol RF 031-221-RFX (panel BNC, wired with ~60 mm RG-316)", "Panel jack on the left end wall of the Hammond 1590C (see docs/pcb-prototype-A.md); RG-316 pigtail to these pads, braid to both GND pads")
 add("GDT1", ("Device", "GDT_2Pin"), "90V", FP["GDT"], {"1": "IN", "3": "GND"}, "Bourns 2027-09-BLF", "Ground pad bonded to MH1 (chassis) by a short wide pour")
 add("C1", CAP, "4.7u 100V film", FP["F47C1"], {"1": "IN", "2": "N1"}, "KEMET R60EI4470AA30J", "18x11x19.1 mm, 15 mm pitch", gen="CIN1")
 add("RBL", RES, "10k", FP["R"], {"1": "N1", "2": "GND"}, mfr25("10K"), gen="RBL")
@@ -107,7 +107,7 @@ for ref, net, note in [("TP1", "VCC", "+9.8 V rail"), ("TP2", "X", "gain-stage c
                        ("TP6", "EN", "RE1 top: I(Q1N) = V(TP6)/56"), ("TP7", "GND", "ground"), ("TP8", "GND", "ground")]:
     add(ref, ("Connector", "TestPoint"), net, FP["TP"], {"1": net}, "Keystone 5001" if net == "GND" else "Keystone 5000", note)
 for k in range(1, 6):
-    add(f"MH{k}", ("Mechanical", "MountingHole_Pad"), "M3", FP["MH"], {"1": "GND"}, "M3 x 4 mm spacer (brass, chassis bond) + M3 screws",
+    add(f"MH{k}", ("Mechanical", "MountingHole_Pad"), "M3", FP["MH"], {"1": "GND"}, "Wurth 970060354 (M3 x 6 mm brass hex spacer) + 2 x M3 x 5 screws",
         "Chassis bond next to GDT1" if k == 1 else "Board mounting / chassis bond")
 
 # ---- KiCad references must be prefix + number. Map documentation names (README, docs, sim) to KiCad refs.

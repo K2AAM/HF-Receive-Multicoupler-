@@ -123,7 +123,7 @@ notes = ("Rev B build A prototype. Net names = sim/scripts/gen.py node names (Si
          "J1 panel BNC wired by RG-316 pigtail; J6 panel DC jack wired; MH1 bonds GDT1 ground to the chassis.")
 texts.append(f'(text "{notes}" (at 160.02 330.2 0) {eff(just="left")} (uuid {U()}))')
 hdr = f'(kicad_sch (version 20230121) (generator eeschema)\n  (uuid {ROOT})\n  (paper "A2")\n'
-hdr += '  (title_block (title "HF Receive Multicoupler Rev B - Build A prototype") (date "2026-11-05") (rev "B-proto1") (company "K2AAM") (comment 1 "4-port, through-hole, 2-layer, Hammond 1590BB") (comment 2 "Simulated design; hardware unmeasured"))\n'
+hdr += '  (title_block (title "HF Receive Multicoupler Rev B - Build A prototype") (date "2026-11-05") (rev "B-proto1") (company "K2AAM") (comment 1 "4-port, through-hole, 2-layer, Hammond 1590C") (comment 2 "Simulated design; hardware unmeasured"))\n'
 hdr += "  (lib_symbols\n" + "\n".join("    " + ser(v) for v in libs.values()) + "\n  )\n"
 body = "\n".join("  " + t for t in items + texts)
 foot = f'\n  (sheet_instances (path "/" (page "1")))\n)\n'

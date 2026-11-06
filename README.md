@@ -49,7 +49,7 @@ Builds B (+3.2 dB) and C (+5.5 dB) are in [`sim/results/summary.json`](sim/resul
 
 ![PCB front](hardware/kicad/img/pcb_front.png)
 
-- **Board:** 2 layers, through-hole, 104 × 78 mm, for a Hammond 1590BB.
+- **Board:** 2 layers, through-hole, 104 × 78 mm, for a Hammond 1590C.
 - **Connectors:** four R/A PCB BNC outputs on the front wall; input BNC on the left wall and DC jack on the back wall, both panel-mounted.
 - **Checks:** DRC is clean, and the schematic, PCB and simulation netlists agree pin for pin. KiCad's own ERC still needs one run in eeschema (KiCad 7 has no command-line ERC).
 - **Layout-parasitic estimate (simulated):** with the estimated trace capacitance, worst S11 moves from −23 dB to about −18 dB. The gain response barely moves.
@@ -65,7 +65,7 @@ Details: [`docs/pcb-prototype-A.md`](docs/pcb-prototype-A.md).
 | `docs/review2-response.md` | Current verification status (supersedes parts of `review-response.md`) |
 | `docs/bringup-and-test.md` | Inductor selection, power-only test with dummy load, bring-up and bench tests |
 | `docs/layout-guidance.md` | PCB layout rules |
-| `docs/pcb-prototype-A.md` | Prototype PCB (build A): part and footprint choices, layout, checks done, Hammond 1590BB fit, layout-parasitic estimate, open items before ordering |
+| `docs/pcb-prototype-A.md` | Prototype PCB (build A): part and footprint choices, layout, checks done, Hammond 1590C fit and drilling, layout-parasitic estimate, open items before ordering |
 | `hardware/kicad/` | KiCad 7 project (schematic, PCB, footprint library), Gerbers and drill, BOM with MPNs and footprints, board and enclosure images, generator and check scripts |
 | `sim/scripts/gen.py` | Single netlist generator; builds A/B/C in `BUILDS`; checked simulation runner |
 | `sim/spice/*.cir` | Standalone decks for build A (exported by `export_netlists.py`) |

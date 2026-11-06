@@ -38,4 +38,4 @@ RDUMMY,1,100 ohm 3 W,5 %,TE ROX3SJ100R,axial 5.5 x 16 mm,"NEW. Test fixture only
 J2-J5,4,BNC jack R/A PCB 50 ohm,,Amphenol RF 031-5431-10RFX,through-hole,"Outputs, PCB-mounted on the front wall",https://www.digikey.co.uk/en/products/detail/amphenol-rf/031-5431-10RFX/2041816,Active
 J1,1,"BNC jack, front-mount bulkhead",,Amphenol RF 031-221-RFX,"panel, solder cup",Input. CHANGED for the PCB: panel-mounted on the left wall with ~60 mm RG-316 to the board (rear-mount PCB jacks cannot go on two opposite walls),,
 J6,1,2.1 mm DC jack,,Switchcraft 722A,"panel, solder lugs","Centre positive; 2.0 mm pin, mates with common 2.1 mm plugs. Wired to the PCB",not checked,
-Enclosure,1,Hammond 1590BB,,Hammond 1590BB,die-cast,PCB on five M3 x 4 mm brass spacers; drilling in docs/pcb-prototype-A.md,not re-checked,
+Enclosure,1,Hammond 1590C,,Hammond 1590C,die-cast,PCB on five M3 x 6 mm brass spacers (Wurth 970060354); machining and drilling per hardware/kicad/drill_drawing_1590C.pdf,checked by model (enclosure.py); measure before cutting,
