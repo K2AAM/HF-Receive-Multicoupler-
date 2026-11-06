@@ -23,7 +23,7 @@
   "verdict": "mu>1 (unconditionally stable for these other-port loads)"
  },
  "max_abs_S00": 0.9998010889690172,
- "max_abs_S11": 0.934025579769172,
+ "max_abs_S11": 0.934025579829704,
  "max_abs_gain_any_path_dB": 5.519294013912136,
  "negative_control": {
   "result": {

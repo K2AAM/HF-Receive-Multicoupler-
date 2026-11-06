@@ -7,8 +7,8 @@ NU = int(sys.argv[2]) if len(sys.argv) > 2 else 200
 
 def rf_metrics(P):
     d = gen.op(P)
-    r = gen.ac(P, 1e4, 120e6, 25); f = r['f']; b = (f >= 1e4) & (f <= 50.01e6)
-    g = lambda a, F: float(a[np.argmin(abs(f - F))])
+    r = gen.ac(P, 1e4, 120e6, 25); f = r['f']; b = gen.band_mask(f)   # includes exactly 10 kHz and 50 MHz
+    g = lambda a, F: float(gen.at(f, a, F))                            # exact simulated frequency only
     return dict(T=P['TEMP'], VCC=round(P['VCC'], 3), Itot_mA=-d['i(vcc)'] * 1e3, Iq1n_mA=d['@q1n[ic]'] * 1e3, Iq1p_mA=-d['@q1p[ic]'] * 1e3,
                 Iout_mA=d['@q2[ic]'] * 1e3, Vout=d['v(out)'], G1=g(r['S21'], 1e6), G10=g(r['S21'], 10e6), G30=g(r['S21'], 30e6),
                 G50=g(r['S21'], 50e6), flat=float(r['S21'][b].max() - r['S21'][b].min()), S11max=float(r['S11'][b].max()),

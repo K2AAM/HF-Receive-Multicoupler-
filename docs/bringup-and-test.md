@@ -1,15 +1,15 @@
 # Bring-up and bench test (Rev B)
 
-Expected values come from simulation (9.81 V rail) and are not measurements. Monte Carlo ranges are given where they exist.
+Expected values come from simulation (9.81 V rail) and are not measurements. Monte Carlo (MC) ranges are given where they exist. They describe simulated tolerance spread, not guaranteed hardware limits. Measured values outside them call for investigation, not automatic rejection.
 
 ## 0. Select the LPF inductors (before assembly)
-The Bourns 78FR inductors are ±10 %. In simulation, unselected parts can degrade S11 to about −12 dB. Parts selected to ±3 % hold S11 ≤ −20 dB.
+The Bourns 78FR inductors are ±10 %. In simulation, unselected parts can degrade S11 to about −11 dB. Parts selected to ±3 % hold S11 ≤ −19.4 dB (worst of 200 Monte Carlo units).
 
 1. Buy 10 × 78FR22K-RC (L1, L3) and 5 × 78FR27K-RC (L2).
 2. Calibrate the VNA (SOL) at the end of a short fixture: a BNC-to-clip or SMA edge pad with ≤ 5 mm leads.
 3. Measure each inductor at 10 MHz and read L from the reactance (X = 2πfL). 220 nH is 13.8 Ω at 10 MHz, and 270 nH is 17.0 Ω.
 4. Keep inductors within ±3 %: 213–227 nH (13.4–14.3 Ω) and 262–278 nH (16.5–17.5 Ω). Prefer an L1/L3 pair that also match each other.
-5. If none fall in the window, use the closest parts and expect S11 between −12 and −20 dB.
+5. If none fall in the window, use the closest parts and expect S11 between −11 and −19 dB.
 
 The VNA fixture adds a few nH, so measure a short-circuited fixture first and subtract its reactance.
 
@@ -47,9 +47,9 @@ The LM317's minimum load is up to 10 mA [datasheet], but its divider draws only 
 6. If OUT is more than 0.5 V off center: raise R2 to lower it, or raise R4 to raise it (in 10 % steps).
 
 ## 3. Small-signal checks (VNA, ports terminated)
-- **Gain:** J1 → J2, with J3–J5 terminated in 50 Ω. Expect +1.7 dB (MC 1.5–1.9) at 1 MHz, +1.4 dB at 30 MHz and +0.8 dB (MC 0.55–0.97) at 50 MHz. If 50 MHz is near +0.2 dB, the transistors' CJC is higher than modelled. Repeat for each port. Port-to-port spread should be < 0.2 dB.
-- **FM rejection:** S21 at 88/100 MHz should be about −36/−45 dB. Inductor tolerance moves the edge, so check that 50 MHz is still within 1 dB.
-- **Match:** S22 better than −23 dB. S11 better than −19 dB from 0.1–50 MHz with selected inductors.
+- **Gain:** J1 → J2, with J3–J5 terminated in 50 Ω. Simulated nominal: +1.72 dB at 1 MHz, +1.42 dB at 30 MHz and +0.84 dB at 50 MHz. Monte Carlo ranges (sim): 1.54–1.89 dB at 1 MHz and 0.69–1.04 dB at 50 MHz; flatness 10 kHz–50 MHz 0.79–0.91 dB. If 50 MHz measures near +0.3 dB, the transistors' CJC is higher than modelled. Repeat for each port. Port-to-port spread should be < 0.2 dB.
+- **FM rejection:** simulated S21 at 88/100/108 MHz is about −34.8/−44.8/−50.7 dB nominal. With selected inductors the Monte Carlo range at 88 MHz is −33.4 to −35.8 dB. Inductor tolerance moves the edge, so check that gain at 50 MHz is within about 0.9 dB of gain at 1 MHz.
+- **Match:** simulated S22 is −23.3 dB nominal (MC worst −23.0 dB). S11 is −23.3 dB nominal and, with selected inductors, no worse than −19.4 dB (MC). Measure from 0.1–50 MHz, and include 50 MHz itself.
 - **Port-to-port isolation:** drive J2, measure J3, with J1, J4 and J5 terminated. Expect ≥ 33 dB at 1–10 MHz, ≥ 32 dB at 30 MHz, ≥ 29 dB at 50 MHz.
 - **Output-to-input isolation:** drive J2, measure J1. Expect ≥ 60 dB at 30 MHz.
 - **10 kHz–50 kHz:** below the VNA's lower limit. Use the R&S SMG or URM-26D into J1, with a scope or audio analyzer on J2 across 50 Ω. Expect +1.7 dB at 10 kHz.

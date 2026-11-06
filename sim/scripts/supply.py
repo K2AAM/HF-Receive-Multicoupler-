@@ -3,6 +3,7 @@ The LM317 is behavioural (see gen.supply_block): it has ideal line rejection, a 
 VDROP and a current limit. Conclusions that depend on those assumptions are labelled."""
 import gen, numpy as np, json
 R = {}
+NAMED = (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)   # reported frequencies, solved exactly
 P = gen.params("A", SUPPLY="full")
 loads = "RGIN IN 0 50\n" + gen.portloads(P)
 
@@ -27,9 +28,9 @@ log, d = gen.run(gen.netlist(P, an, loads), {"d.txt": dict(xmin=8, xmax=16, min_
 a = d["d.txt"]; vin = a[:, 0]; vcc = a[:, 1]; uin = a[:, 3]; uout = a[:, 5]
 nom = vcc[-1]; head = uin - uout
 def first(cond): i = np.argmax(cond); return round(float(vin[i]), 2) if cond.any() else None
-R["input_sweep"] = dict(rail_at_13p8V=round(float(np.interp(13.8, vin, vcc)), 3),
-    U1_headroom_at_13p8V=round(float(np.interp(13.8, vin, head)), 2),
-    U1_headroom_at_12p0V=round(float(np.interp(12.0, vin, head)), 2),
+R["input_sweep"] = dict(rail_at_13p8V=round(float(gen.at(vin, vcc, 13.8)), 3),
+    U1_headroom_at_13p8V=round(float(gen.at(vin, head, 13.8)), 2),
+    U1_headroom_at_12p0V=round(float(gen.at(vin, head, 12.0)), 2),
     VIN_for_3V_headroom=first(head >= 3.0),
     VIN_where_rail_within_10mV_of_final_model=first(vcc >= nom - 0.01),
     note="Regulation below the 3 V datasheet test condition relies on typical dropout (model VDROP 1.7 V at ~0.1 A).")
@@ -37,21 +38,18 @@ print(R["input_sweep"], flush=True)
 
 # 3. rail impedance at VCC node, full supply vs ideal-source+no-filter reference
 def zrail(S):
-    an = "ac dec 20 10 100e6\nwrdata z.txt v(vcc)"
-    log, d = gen.run(gen.netlist(P, an, loads + "\nIZR 0 VCC dc 0 ac 1", supply_over=S),
-                     {"z.txt": dict(xmin=10, xmax=100e6, min_rows=100, ncols=3)})
-    a = d["z.txt"]; return a[:, 0], np.abs(a[:, 1] + 1j * a[:, 2])
+    f, (v,) = gen.ac_sweep(P, loads + "\nIZR 0 VCC dc 0 ac 1", ["v(vcc)"], 10, 100e6, 20, exact=NAMED, supply_over=S)
+    return f, np.abs(v)
 f, z = zrail({})
-R["rail_impedance_ohm"] = {f"{F:g}Hz": round(float(np.interp(F, f, z)), 4) for F in (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)}
+R["rail_impedance_ohm"] = {f"{F:g}Hz": round(float(gen.at(f, z, F)), 4) for F in (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)}
 R["rail_impedance_peak"] = dict(ohm=round(float(z.max()), 3), at_Hz=float(f[np.argmax(z)]))
 print(R["rail_impedance_ohm"], R["rail_impedance_peak"], flush=True)
 
 # 4. regulator-output noise to port 1 (conservative: no regulator rejection assumed)
-an = "ac dec 20 10 100e6\nwrdata r.txt v(p1) v(vcc)"
-log, d = gen.run(gen.netlist(P, an, loads, supply_over=dict(VRIP_AC=1)), {"r.txt": dict(xmin=10, xmax=100e6, min_rows=100, ncols=6)})
-a = d["r.txt"]; f = a[:, 0]; tp1 = 20 * np.log10(np.abs(a[:, 1] + 1j * a[:, 2])); tvcc = 20 * np.log10(np.abs(a[:, 4] + 1j * a[:, 5]))  # wrdata repeats the scale column per vector
-R["U1_output_to_port1_dB"] = {f"{F:g}Hz": round(float(np.interp(F, f, tp1)), 1) for F in (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)}
-R["U1_output_to_rail_dB"] = {f"{F:g}Hz": round(float(np.interp(F, f, tvcc)), 1) for F in (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)}
+f, (vp1, vvcc) = gen.ac_sweep(P, loads, ["v(p1)", "v(vcc)"], 10, 100e6, 20, exact=NAMED, supply_over=dict(VRIP_AC=1))
+tp1 = 20 * np.log10(np.abs(vp1)); tvcc = 20 * np.log10(np.abs(vvcc))
+R["U1_output_to_port1_dB"] = {f"{F:g}Hz": round(float(gen.at(f, tp1, F)), 1) for F in (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)}
+R["U1_output_to_rail_dB"] = {f"{F:g}Hz": round(float(gen.at(f, tvcc, F)), 1) for F in (100, 1e3, 10e3, 100e3, 1e6, 10e6, 30e6)}
 print(R["U1_output_to_port1_dB"], R["U1_output_to_rail_dB"], flush=True)
 
 # 5. supply-only bring-up deck (amplifier not fitted): with and without the dummy load

@@ -5,8 +5,8 @@
   "method": "gear",
   "steps_per_cycle": 20,
   "reltol": 1e-05,
-  "iip3": 30.14,
-  "iip2": 79.01,
+  "iip3": 30.34,
+  "iip2": 78.94,
   "seconds": 1.0,
   "status": "ok"
  },
@@ -16,9 +16,9 @@
   "method": "gear",
   "steps_per_cycle": 40,
   "reltol": 1e-06,
-  "iip3": 30.66,
+  "iip3": 30.79,
   "iip2": 79.0,
-  "seconds": 2.5,
+  "seconds": 2.3,
   "status": "ok"
  },
  {
@@ -27,9 +27,9 @@
   "method": "gear",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 30.86,
+  "iip3": 30.93,
   "iip2": 79.66,
-  "seconds": 2.6,
+  "seconds": 2.7,
   "status": "ok"
  },
  {
@@ -38,9 +38,9 @@
   "method": "gear",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 30.83,
+  "iip3": 30.87,
   "iip2": 79.37,
-  "seconds": 3.8,
+  "seconds": 3.3,
   "status": "ok"
  },
  {
@@ -49,8 +49,8 @@
   "method": "trap",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 30.85,
-  "iip2": 79.45,
+  "iip3": 30.91,
+  "iip2": 79.46,
   "seconds": 2.2,
   "status": "ok"
  },
@@ -60,9 +60,9 @@
   "method": "trap",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 30.92,
+  "iip3": 30.95,
   "iip2": 79.37,
-  "seconds": 3.9,
+  "seconds": 3.7,
   "status": "ok"
  },
  {
@@ -71,9 +71,9 @@
   "method": "gear",
   "steps_per_cycle": 20,
   "reltol": 1e-05,
-  "iip3": 30.0,
-  "iip2": 77.18,
-  "seconds": 1.1,
+  "iip3": 30.03,
+  "iip2": 77.17,
+  "seconds": 1.2,
   "status": "ok"
  },
  {
@@ -82,9 +82,9 @@
   "method": "gear",
   "steps_per_cycle": 40,
   "reltol": 1e-06,
-  "iip3": 29.75,
+  "iip3": 29.76,
   "iip2": 78.35,
-  "seconds": 2.6,
+  "seconds": 2.3,
   "status": "ok"
  },
  {
@@ -104,9 +104,9 @@
   "method": "gear",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 29.7,
+  "iip3": 29.71,
   "iip2": 78.46,
-  "seconds": 3.7,
+  "seconds": 3.5,
   "status": "ok"
  },
  {
@@ -115,9 +115,9 @@
   "method": "trap",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 29.7,
+  "iip3": 29.71,
   "iip2": 78.6,
-  "seconds": 2.4,
+  "seconds": 2.1,
   "status": "ok"
  },
  {
@@ -126,9 +126,9 @@
   "method": "trap",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 29.7,
+  "iip3": 29.71,
   "iip2": 78.46,
-  "seconds": 10.1,
+  "seconds": 10.0,
   "status": "ok"
  },
  {
@@ -137,9 +137,9 @@
   "method": "gear",
   "steps_per_cycle": 20,
   "reltol": 1e-05,
-  "iip3": 28.78,
-  "iip2": 69.15,
-  "seconds": 0.3,
+  "iip3": 28.93,
+  "iip2": 69.16,
+  "seconds": 0.4,
   "status": "ok"
  },
  {
@@ -148,8 +148,8 @@
   "method": "gear",
   "steps_per_cycle": 40,
   "reltol": 1e-06,
-  "iip3": 30.36,
-  "iip2": 75.65,
+  "iip3": 30.49,
+  "iip2": 75.66,
   "seconds": 0.9,
   "status": "ok"
  },
@@ -159,7 +159,7 @@
   "method": "gear",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 30.27,
+  "iip3": 30.33,
   "iip2": 78.84,
   "seconds": 1.0,
   "status": "ok"
@@ -170,9 +170,9 @@
   "method": "gear",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 30.68,
+  "iip3": 30.72,
   "iip2": 79.67,
-  "seconds": 1.4,
+  "seconds": 1.5,
   "status": "ok"
  },
  {
@@ -181,9 +181,9 @@
   "method": "trap",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 30.81,
+  "iip3": 30.89,
   "iip2": 79.36,
-  "seconds": 1.0,
+  "seconds": 0.9,
   "status": "ok"
  },
  {
@@ -192,9 +192,9 @@
   "method": "trap",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 30.71,
+  "iip3": 30.75,
   "iip2": 79.72,
-  "seconds": 1.6,
+  "seconds": 1.5,
   "status": "ok"
  },
  {
@@ -203,9 +203,9 @@
   "method": "gear",
   "steps_per_cycle": 20,
   "reltol": 1e-05,
-  "iip3": 29.83,
-  "iip2": 73.83,
-  "seconds": 0.5,
+  "iip3": 29.85,
+  "iip2": 73.81,
+  "seconds": 0.4,
   "status": "ok"
  },
  {
@@ -214,9 +214,9 @@
   "method": "gear",
   "steps_per_cycle": 40,
   "reltol": 1e-06,
-  "iip3": 29.61,
+  "iip3": 29.62,
   "iip2": 77.53,
-  "seconds": 0.9,
+  "seconds": 0.8,
   "status": "ok"
  },
  {
@@ -225,9 +225,9 @@
   "method": "gear",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 29.55,
+  "iip3": 29.56,
   "iip2": 78.32,
-  "seconds": 1.1,
+  "seconds": 1.0,
   "status": "ok"
  },
  {
@@ -247,9 +247,9 @@
   "method": "trap",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 29.58,
+  "iip3": 29.59,
   "iip2": 78.61,
-  "seconds": 1.1,
+  "seconds": 1.5,
   "status": "ok"
  },
  {
@@ -258,9 +258,9 @@
   "method": "trap",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 29.57,
+  "iip3": 29.58,
   "iip2": 78.51,
-  "seconds": 1.6,
+  "seconds": 1.4,
   "status": "ok"
  },
  {
@@ -269,8 +269,8 @@
   "method": "gear",
   "steps_per_cycle": 20,
   "reltol": 1e-05,
-  "iip3": 29.06,
-  "iip2": 64.76,
+  "iip3": 29.37,
+  "iip2": 68.39,
   "seconds": 0.1,
   "status": "ok"
  },
@@ -280,19 +280,8 @@
   "method": "gear",
   "steps_per_cycle": 40,
   "reltol": 1e-06,
-  "iip3": 31.51,
-  "iip2": 77.81,
-  "seconds": 0.2,
-  "status": "ok"
- },
- {
-  "case": "IM2 0.6/1.0 MHz",
-  "pin": -10,
-  "method": "gear",
-  "steps_per_cycle": 80,
-  "reltol": 1e-06,
-  "iip3": 31.68,
-  "iip2": 83.43,
+  "iip3": 31.3,
+  "iip2": 79.48,
   "seconds": 0.3,
   "status": "ok"
  },
@@ -300,10 +289,21 @@
   "case": "IM2 0.6/1.0 MHz",
   "pin": -10,
   "method": "gear",
+  "steps_per_cycle": 80,
+  "reltol": 1e-06,
+  "iip3": 32.03,
+  "iip2": 81.38,
+  "seconds": 0.4,
+  "status": "ok"
+ },
+ {
+  "case": "IM2 0.6/1.0 MHz",
+  "pin": -10,
+  "method": "gear",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 31.93,
-  "iip2": 82.49,
+  "iip3": 31.95,
+  "iip2": 82.09,
   "seconds": 0.6,
   "status": "ok"
  },
@@ -313,9 +313,9 @@
   "method": "trap",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 32.06,
-  "iip2": 82.05,
-  "seconds": 2.0,
+  "iip3": 32.13,
+  "iip2": 81.59,
+  "seconds": 0.8,
   "status": "ok"
  },
  {
@@ -324,9 +324,9 @@
   "method": "trap",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 31.92,
-  "iip2": 82.6,
-  "seconds": 0.6,
+  "iip3": 31.95,
+  "iip2": 81.97,
+  "seconds": 0.8,
   "status": "ok"
  },
  {
@@ -335,8 +335,8 @@
   "method": "gear",
   "steps_per_cycle": 20,
   "reltol": 1e-05,
-  "iip3": 31.28,
-  "iip2": 77.52,
+  "iip3": 30.8,
+  "iip2": 77.53,
   "seconds": 0.2,
   "status": "ok"
  },
@@ -346,8 +346,8 @@
   "method": "gear",
   "steps_per_cycle": 40,
   "reltol": 1e-06,
-  "iip3": 30.91,
-  "iip2": 78.84,
+  "iip3": 30.68,
+  "iip2": 78.75,
   "seconds": 0.3,
   "status": "ok"
  },
@@ -357,8 +357,8 @@
   "method": "gear",
   "steps_per_cycle": 80,
   "reltol": 1e-06,
-  "iip3": 30.83,
-  "iip2": 79.19,
+  "iip3": 30.6,
+  "iip2": 78.7,
   "seconds": 0.3,
   "status": "ok"
  },
@@ -368,19 +368,8 @@
   "method": "gear",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 30.82,
-  "iip2": 79.31,
-  "seconds": 0.6,
-  "status": "ok"
- },
- {
-  "case": "IM2 0.6/1.0 MHz",
-  "pin": 0,
-  "method": "trap",
-  "steps_per_cycle": 80,
-  "reltol": 1e-06,
-  "iip3": 30.82,
-  "iip2": 79.3,
+  "iip3": 30.58,
+  "iip2": 78.84,
   "seconds": 0.5,
   "status": "ok"
  },
@@ -388,11 +377,22 @@
   "case": "IM2 0.6/1.0 MHz",
   "pin": 0,
   "method": "trap",
+  "steps_per_cycle": 80,
+  "reltol": 1e-06,
+  "iip3": 30.6,
+  "iip2": 78.57,
+  "seconds": 0.3,
+  "status": "ok"
+ },
+ {
+  "case": "IM2 0.6/1.0 MHz",
+  "pin": 0,
+  "method": "trap",
   "steps_per_cycle": 160,
   "reltol": 1e-06,
-  "iip3": 30.82,
-  "iip2": 79.3,
-  "seconds": 0.9,
+  "iip3": 30.58,
+  "iip2": 78.81,
+  "seconds": 0.8,
   "status": "ok"
  }
 ]

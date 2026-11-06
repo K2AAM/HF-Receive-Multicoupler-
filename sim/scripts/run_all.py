@@ -15,11 +15,13 @@ for b in builds:
         d = gen.op(P); s['op'] = {k: r2(v * (1e3 if '[ic]' in k else 1)) for k, v in d.items() if k != 'i(vcc)'}
         dd = gen.op(gen.params(b, SUPPLY='full')); s['op_full_supply'] = dict(rail_V=r2(dd['v(vcc)']), input_mA=r2(dd['Irail_mA']))
     def do_ac():
-        r = gen.ac(P, 1e3, 200e6, 40); f = r['f']; band = (f >= 1e4) & (f <= 50.1e6)
-        at = lambda a, F: r2(a[np.argmin(abs(f - F))])
+        r = gen.ac(P, 1e3, 200e6, 40); f = r['f']
+        at = lambda a, F: r2(gen.at(f, a, F))            # exact simulated frequency only
+        ext = lambda a: [r2(x) for x in gen.band_extrema(f, a)]   # 10 kHz and 50 MHz both included
         s['gain_dB'] = {f"{F/1e6:g}MHz": at(r['S21'], F) for F in (1e4, 1e5, 1e6, 10e6, 30e6, 50e6)}
-        s['gain_range_10k_50M_dB'] = [r2(r['S21'][band].min()), r2(r['S21'][band].max())]
-        s['S11_max_10k_50M_dB'] = r2(r['S11'][band].max()); s['S22_max_10k_50M_dB'] = r2(r['S22'][band].max())
+        s['gain_range_10k_50M_dB'] = ext(r['S21'])
+        s['flatness_10k_50M_dB'] = r2(np.ptp(r['S21'][gen.band_mask(f)]))
+        s['S11_max_10k_50M_dB'] = ext(r['S11'])[1]; s['S22_max_10k_50M_dB'] = ext(r['S22'])[1]
         s['port_isolation_dB'] = {f"{F/1e6:g}MHz": at(r['iso'], F) for F in (1e6, 10e6, 30e6, 50e6)}
         s['reverse_isolation_dB'] = {f"{F/1e6:g}MHz": at(r['rev'], F) for F in (1e6, 10e6, 30e6, 50e6)}
         s['rejection_dB'] = {f"{F/1e6:g}MHz": -at(r['S21'], F) for F in (88e6, 100e6, 108e6, 150e6)}

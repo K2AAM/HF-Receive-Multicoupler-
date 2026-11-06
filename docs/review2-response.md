@@ -1,6 +1,6 @@
 # Review 2 response (Rev B, second verification pass)
 
-Date: 2026-11-05. Simulator: ngspice 42. All results below are **simulation** unless marked otherwise. Nothing has been built or measured yet. Labels:
+Date: 2026-11-05, frequency-sampling correction applied the same day (section 0). Simulator: ngspice 42. All results below are **simulation** unless marked otherwise. Nothing has been built or measured yet. Labels:
 
 - **[sim]**: an ngspice run in this repo, regenerated from a clean run with the scripts named
 - **[datasheet]**: a published manufacturer limit, not simulated
@@ -8,6 +8,66 @@ Date: 2026-11-05. Simulator: ngspice 42. All results below are **simulation** un
 - **[hw]**: needs a bench measurement
 
 The design stays **four ports, through-hole**. Nothing in the corrected verification required changing the signal-path topology. Three supply parts changed (F1, L4, new D6/D7/C23/RDAMP), and the LPF parts now carry tighter, stated tolerances plus an inductor-selection step.
+
+---
+
+## 0. Frequency-sampling correction (applied after the first issue of this document)
+
+**The problem:** earlier AC metrics were read from a logarithmic sweep that did not contain the exact band edge or the named test frequencies.
+
+- At 25 points per decade, the sweep points nearest 50 MHz are 47.35 MHz and 51.96 MHz.
+- "Gain at 50 MHz" was therefore really gain at 51.96 MHz.
+- The passband mask (≤ 50.01 MHz) stopped at 47.35 MHz, so extrema and flatness omitted the top 2.65 MHz, where the droop is steepest.
+- The 88 MHz rejection was also read at the nearest grid point.
+
+**The fix (`gen.ac_sweep`, `gen.at`, `gen.band_mask`, `gen.band_extrema`):**
+
+- **Exact frequencies:** every AC analysis now runs a dense log sweep plus an exact single-frequency solve (`ac lin 1 F F`) at the sweep ends, at both band edges (10 kHz and 50 MHz) and at every reported frequency. The reported list is 10 k, 100 k, 1, 7, 10, 14, 28, 30, 50, 88, 100, 108 and 150 MHz. Each exact result is checked to have been solved at the requested frequency to 1e-7 relative.
+- **Named values:** these are read only at exactly simulated frequencies. `gen.at()` raises an error if the frequency was not solved; it has no nearest-point fallback.
+- **No interpolation:** none is used for any reported AC value. The supply analyses also solve their named frequencies exactly. One supply impedance value (30 MHz) had been interpolated and was wrong in the 4th decimal.
+- **Passband extrema:** these use an inclusive mask that **raises an error** if 10 kHz or 50 MHz is missing, or if any step inside the band exceeds 1/20 decade.
+- **Two-tone records:** these are now a whole number of periods of both tones. The FFT bin is the GCD of the tone frequencies, and every tone and product must fall exactly on a bin, or the run fails. Previously the 0.6/1.0 MHz record was 66.7 µs, which put 1.0 MHz a third of a bin off. That changed MW IIP2 by up to 0.5 dB.
+
+**Density check** (`freq_density.py` → `results/freq_density.json`) [sim]:
+
+- Method: passband S21 minimum and maximum, flatness, S11 and S22 maxima, and gain at 50 MHz, at 25, 50, 100, 200 and 400 points per decade, both edges included.
+- Units checked: nominal build A and four units with unselected (±10 %) inductors, whose ripple is sharpest.
+- Result: the largest change from the 400-point reference is 0.024 dB (S11 maximum at 25 points per decade). Every S21 extremum is unchanged to 0.001 dB. Monte Carlo and LPF runs use 25 points per decade; the nominal runs use 40.
+
+**Regression tests added to `test_harness.py`** (all pass):
+
+- 50 MHz is not on the raw 25-point grid (the test premise).
+- Both band edges are present after merging.
+- The named 50 MHz gain equals an independent single-point 50 MHz solve to 1e-6 dB.
+- The old nearest-point method would have read 51.96 MHz (0.705 dB instead of 0.843 dB).
+- The 50 MHz edge sets the passband minimum, and 10 kHz sits at the maximum.
+- Asking for a non-simulated frequency raises an error.
+- Extrema on a grid missing 50 MHz raise an error.
+- Extrema on a too-sparse grid raise an error, even with both edges present.
+- Extrema on a grid missing 10 kHz raise an error.
+- The 0.6/1.0 MHz two-tone products land on exact FFT bins.
+
+**What changed in the results** (build A, nominal):
+
+| Quantity | Before | Corrected | Why |
+| --- | --- | --- | --- |
+| Gain range 10 kHz–50 MHz | 0.96–1.72 dB | 0.84–1.72 dB | 47–50 MHz now included |
+| Flatness 10 kHz–50 MHz | 0.76–0.77 dB | **0.88 dB** | as above |
+| Worst S22 | −23.7 dB | −23.3 dB | as above |
+| Rejection 88 / 108 MHz | 35.9 / 49.4 dB | **34.8** / 50.7 dB | read at exactly 88 and 108 MHz instead of the nearest grid point |
+| MC gain @50 MHz (min–max) | 0.55–0.97 dB | 0.69–1.04 dB | read at 50.0 MHz, not 51.96 MHz |
+| MC flatness (max) | 0.79 dB | **0.91 dB** | |
+| MC rejection @88 MHz (min) | 35.9 dB | **33.4 dB** | |
+| LPF study, selected L: worst S11 / flatness | −20.0 / 0.80 dB | **−19.8 / 0.93 dB** | |
+| IIP2 0.6+1.0 MHz (−10 / 0 dBm) | +82.5 / +79.3 dBm | +82.1 / +78.8 dBm | exact FFT bins |
+
+**Do selected inductors still meet the targets?** Not the ones previously stated. Selection still does what it was chosen for: it keeps S11 near −20 dB instead of −11 dB. But the old "S11 ≤ −20 dB, flatness ≤ 0.8 dB, ≥ 36 dB at 88 MHz" claims are withdrawn. The supported specs with selected inductors are:
+
+- **S11:** ≤ −19.4 dB (worst of 200 MC units)
+- **Flatness, 10 kHz–50 MHz:** ≤ 0.93 dB
+- **Rejection at 88 MHz:** ≥ 33.4 dB
+
+Most of the 50 MHz droop comes from the amplifier, not the filter: the nominal unit already has 0.88 dB, and only 0.3 dB of droop occurs below 30 MHz. These numbers are still adequate for an HF receive splitter. If a hard ≤ 0.8 dB to 50 MHz or ≥ 36 dB at 88 MHz is required, it needs a design change (for example retuning the LPF cutoff upward, or a small 50 MHz peaking network). That change has not been simulated.
 
 ---
 
@@ -23,7 +83,7 @@ What `gen.run()` now does for every simulation:
 - **Printed values:** the `.op` analyses require every requested value to be present.
 - **No fallback:** nothing falls back to older data, and every caller records failures explicitly. The Monte Carlo and stability scripts count and list them instead of dropping them.
 
-`python3 sim/scripts/test_harness.py` runs 15 regression checks. **All pass [sim].** They cover:
+`python3 sim/scripts/test_harness.py` runs 26 regression checks (15 for failure handling, 11 for frequency sampling; see section 0). **All pass [sim].** They cover:
 
 - a good run is accepted
 - a missing model raises an error
@@ -86,9 +146,9 @@ The reviewer was right. With the inductors at their real ±10 %, the input match
 
 | LPF parts | Worst S11 | 95th pct S11 | Worst flatness | Worst gain @50 MHz | Worst rejection @88 MHz |
 | --- | --- | --- | --- | --- | --- |
-| L ±10 %, C ±5 % (Rev B as documented) | **−11.9 dB** | −14.3 dB | 1.04 dB | +0.07 dB | 33.4 dB |
-| L ±10 %, C ±2 % | −12.1 dB | −14.7 dB | 1.03 dB | +0.29 dB | 34.0 dB |
-| **L selected to ±3 %, C ±2 % (adopted)** | **−20.0 dB** | −20.9 dB | 0.80 dB | +0.63 dB | 36.0 dB |
+| L ±10 %, C ±5 % (Rev B as documented) | **−11.0 dB** | −12.5 dB | 1.29 dB | +0.48 dB | 30.9 dB |
+| L ±10 %, C ±2 % | −12.1 dB | −13.1 dB | 1.17 dB | +0.60 dB | 31.5 dB |
+| **L selected to ±3 %, C ±2 % (adopted)** | **−19.8 dB** | −20.8 dB | 0.93 dB | +0.80 dB | 33.5 dB |
 
 What this shows:
 
@@ -99,8 +159,9 @@ What this shows:
 
 **Achievable spec, stated honestly [sim]:**
 
-- **Selected inductors:** S11 ≤ −20 dB, flatness ≤ 0.8 dB from 10 kHz to 50 MHz, ≥ 36 dB rejection at 88 MHz.
-- **Unselected inductors:** S11 can be as poor as about −12 dB, with up to ~1 dB of flatness error near 50 MHz.
+- **Selected inductors:** S11 ≤ −19.4 dB, flatness ≤ 0.93 dB from 10 kHz to 50 MHz (≤ 0.89 dB at the 95th percentile), ≥ 33.4 dB rejection at 88 MHz.
+- **Unselected inductors:** S11 can be as poor as about −11 dB, with up to ~1.3 dB of flatness.
+- **Superseded targets:** the earlier "S11 ≤ −20 dB, flatness ≤ 0.8 dB, ≥ 36 dB at 88 MHz" was computed without the exact 50 MHz edge and is withdrawn (section 0).
 
 ### Full Monte Carlo, build A (`mc.py` → `results/mc_A.json`) [sim]
 
@@ -113,36 +174,36 @@ Conditions: 200 samples, selected L, ±2 % C, all other tolerances above, device
 | Output Iq (mA) | 38.0 | 30.6 | 33.8 | 36.9 | 40.9 | 43.2 |
 | OUT DC (V) | 4.84 | 4.47 | 4.66 | 4.92 | 5.15 | 5.26 |
 | Gain @1 MHz (dB) | 1.72 | 1.54 | 1.60 | 1.71 | 1.82 | 1.89 |
-| Gain @50 MHz (dB) | 0.71 | 0.55 | 0.62 | 0.74 | 0.85 | 0.97 |
-| Flatness 10 kHz–50 MHz (dB) | 0.77 | 0.70 | 0.71 | 0.74 | 0.77 | 0.79 |
+| Gain @50 MHz (dB) | 0.84 | 0.69 | 0.74 | 0.86 | 0.97 | 1.04 |
+| Flatness 10 kHz–50 MHz (dB) | 0.88 | 0.79 | 0.81 | 0.85 | 0.89 | 0.91 |
 | Worst S11 (dB) | −23.3 | — | — | −22.9 | −20.8 | **−19.4** |
-| Worst S22 (dB) | −23.7 | — | — | −23.7 | −23.4 | −23.4 |
-| Port isolation @30 MHz (dB) | 32.3 | 31.9 | | 32.2 | | 32.5 |
-| Output-to-input isolation @30 MHz (dB) | 61.0 | 60.8 | | 61.0 | | 61.3 |
-| Rejection @88 MHz (dB) | 37.2 | 35.9 | 36.6 | 37.2 | 38.0 | 38.2 |
+| Worst S22 (dB) | −23.3 | — | — | −23.2 | −23.0 | −23.0 |
+| Port isolation @30 MHz (dB) | 32.3 | 31.9 | | 32.2 | | 32.4 |
+| Output-to-input isolation @30 MHz (dB) | 61.0 | 60.7 | | 60.9 | | 61.2 |
+| Rejection @88 MHz (dB) | 34.8 | 33.4 | 34.2 | 34.8 | 35.5 | 35.8 |
 | NF @10 MHz (dB) | 8.32 | 8.13 | 8.26 | 8.59 | 9.00 | 9.13 |
-| IIP3 7.0/7.2 MHz (dBm) | +30.9 | +29.1 | +29.8 | +30.6 | +31.4 | +31.8 |
+| IIP3 7.0/7.2 MHz (dBm) | +30.9 | +29.1 | +29.8 | +30.6 | +31.5 | +31.8 |
 | IIP2 6+7 MHz (dBm) | +78.8 | **+60.0** | +62.1 | +69.8 | +81.3 | +88.0 |
 
 Notes:
 
-- **Gain spread:** unit-to-unit gain spread across all 200 samples is 0.36 dB at 1 MHz and 0.42 dB at 50 MHz (min to max). That compares with the reviewer's 1.38 dB, which came from unselected inductors with ±5 % capacitors.
-- **Unselected-inductor MC:** with otherwise identical tolerances, S11 reaches −11.6 dB, gain at 50 MHz drops to +0.22 dB and flatness reaches 1.06 dB.
+- **Gain spread:** unit-to-unit gain spread across all 200 samples is 0.36 dB at 1 MHz and 0.36 dB at 50 MHz (min to max). That compares with the reviewer's 1.38 dB, which came from unselected inductors with ±5 % capacitors.
+- **Unselected-inductor MC:** with otherwise identical tolerances, S11 reaches −11.6 dB, gain at 50 MHz drops to +0.53 dB, flatness reaches 1.14 dB and 88 MHz rejection falls to 31.6 dB.
 - **IIP2 spread:** the wide spread comes from NPN/PNP mismatch in the sampled models. The true spread in hardware is **[unverified]**.
 
 ### Corners (all devices shifted together, nominal passives) [sim]
 
 | Corner | Rail I (mA) | Gain 1 / 50 MHz | Flatness | S11 | NF10 | IIP3 7 MHz | IIP2 6+7 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| nominal 27 °C | 89.8 | 1.72 / 0.71 | 0.77 | −23.3 | 8.32 | +30.9 | +78.8 |
-| 0 °C / 50 °C | 88.6 / 90.9 | 1.73 / 0.72, 1.72 / 0.69 | 0.76–0.77 | −23.3 | 8.32 | +31.0 / +30.6 | +79.9 / +78.1 |
-| rail −4.5 % / +4.5 % | 84.5 / 95.2 | 1.71 / 0.67, 1.74 / 0.73 | 0.75–0.78 | −23.3 | 8.26 / 8.38 | +30.2 / +31.4 | +77.8 / +79.9 |
-| all hFE 100 | 84.0 | 1.53 / 0.52 | 0.76 | −23.4 | 9.28 | +30.5 | +72.5 |
-| all hFE 300 | 90.8 | 1.75 / 0.73 | 0.77 | −23.3 | 8.14 | +30.9 | +71.0 |
-| TF ×0.7 / ×1.4 | 89.8 | 1.72 / 0.76, 1.72 / 0.58 | 0.73 / 0.85 | −23.6 / −23.1 | 8.27 / 8.42 | +30.9 / +30.8 | +78.8 / +79.7 |
-| CJC ×0.7 / ×1.4 | 89.8 | 1.72 / 1.04, 1.72 / **0.16** | 0.48 / **1.23** | −23.7 / −22.8 | 8.33 | +31.3 / +30.3 | +81.0 / +77.8 |
+| nominal 27 °C | 89.8 | 1.72 / 0.84 | 0.88 | −23.3 | 8.32 | +30.9 | +78.8 |
+| 0 °C / 50 °C | 88.6 / 90.9 | 1.73 / 0.86, 1.72 / 0.83 | 0.87–0.89 | −23.3 | 8.32 | +31.1 / +30.7 | +79.9 / +78.1 |
+| rail −4.5 % / +4.5 % | 84.5 / 95.2 | 1.71 / 0.81, 1.74 / 0.87 | 0.87–0.90 | −23.3 | 8.26 / 8.38 | +30.2 / +31.4 | +77.8 / +79.9 |
+| all hFE 100 | 84.0 | 1.53 / 0.66 | 0.87 | −23.4 | 9.28 | +30.6 | +72.5 |
+| all hFE 300 | 90.8 | 1.75 / 0.87 | 0.88 | −23.3 | 8.14 | +31.0 | +71.0 |
+| TF ×0.7 / ×1.4 | 89.8 | 1.72 / 0.89, 1.72 / 0.74 | 0.83 / 0.99 | −23.6 / −23.1 | 8.27 / 8.42 | +31.0 / +30.8 | +78.8 / +79.7 |
+| CJC ×0.7 / ×1.4 | 89.8 | 1.72 / 1.16, 1.72 / **0.33** | 0.56 / **1.39** | −23.7 / −22.8 | 8.33 | +31.4 / +30.3 | +81.0 / +77.8 |
 
-The model's collector capacitance is the main uncertainty for the 50 MHz end. If the real CJC is 40 % higher, gain at 50 MHz drops to about +0.2 dB. Below 30 MHz the effect is ≤ 0.2 dB.
+The model's collector capacitance is the main uncertainty for the 50 MHz end. If the real CJC is 40 % higher, gain at 50 MHz drops to about +0.3 dB and flatness grows to 1.4 dB. Below 30 MHz the effect is ≤ 0.2 dB.
 
 ## 4. Stability (`stability.py`, `mu_bands.py` → `results/stability_*.json`, `mu_bands_*.json`)
 
@@ -242,20 +303,21 @@ Conditions: 50 Ω source, four 50 Ω loads, measured at J2. Ideal 9.81 V rail. E
 
 | | A (recommended) | B | C |
 | --- | --- | --- | --- |
-| Gain 10 kHz / 1 / 10 / 30 / 50 MHz (dB) | 1.72 / 1.72 / 1.69 / 1.42 / 0.83 | 3.15 / 3.16 / 3.11 / 2.74 / 2.00 | 5.51 / 5.52 / 5.45 / 4.95 / 4.01 |
-| Worst S11 / S22, 10 kHz–50 MHz (dB) | −23.3 / −23.7 | −20.8 / −23.6 | −20.4 / −23.6 |
+| Gain 10 kHz / 1 / 10 / 30 / 50 MHz (dB) | 1.72 / 1.72 / 1.69 / 1.42 / 0.84 | 3.15 / 3.16 / 3.11 / 2.74 / 2.01 | 5.51 / 5.52 / 5.45 / 4.95 / 4.02 |
+| Flatness 10 kHz–50 MHz (dB) | 0.88 | 1.14 | 1.50 |
+| Worst S11 / S22, 10 kHz–50 MHz (dB) | −23.3 / −23.3 | −20.8 / −23.2 | −20.4 / −23.2 |
 | Port isolation 1 / 30 / 50 MHz (dB) | 34.2 / 32.3 / 29.4 | 34.2 / 32.3 / 29.3 | 34.2 / 32.3 / 29.2 |
 | Output-to-input isolation 30 MHz (dB) | 61.0 | 61.6 | 62.8 |
-| Rejection 88 / 100 / 108 MHz (dB) | 35.9 / 44.9 / 49.4 | 35.3 / 44.5 / 49.0 | 34.0 / 43.1 / 47.6 |
+| Rejection 88 / 100 / 108 MHz (dB) | 34.8 / 44.8 / 50.7 | 34.1 / 44.3 / 50.4 | 32.8 / 43.0 / 49.0 |
 | NF 1 / 10 / 30 / 50 MHz (dB) | 8.2 / 8.3 / 9.2 / 10.6 | 7.6 / 7.8 / 8.7 / 10.2 | 6.8 / 6.9 / 7.9 / 9.5 |
-| IIP3 1 / 7 / 14 / 28 MHz, −10 dBm tones (dBm) | +31.9 / +30.8 / +29.3 / +27.1 | +30.6 / +29.4 / +27.8 / +25.6 | +28.4 / +27.1 / +25.5 / +23.5 |
+| IIP3 1 / 7 / 14 / 28 MHz, −10 dBm tones (dBm) | +32.0 / +30.9 / +29.3 / +27.1 | +30.6 / +29.4 / +27.8 / +25.6 | +28.4 / +27.1 / +25.5 / +23.5 |
 | IIP3 7 MHz, 0 dBm tones | +29.7 | +27.8 | **+20.8** |
 | IIP2 6+7 MHz, −10 / 0 dBm tones | +79.7 / +78.5 | +77.7 / +75.7 | +76.7 / **+43.7** |
-| IIP2 0.6+1.0 MHz, −10 / 0 dBm tones | +82.5 / +79.3 | +80.8 / +76.0 | +77.4 / **+43.7** |
+| IIP2 0.6+1.0 MHz, −10 / 0 dBm tones | +82.1 / +78.8 | +80.1 / +75.6 | +76.9 / **+43.2** |
 | Input / output P1dB at 7 MHz (dBm) | +11.0 / +11.7 | +9.8 / +11.9 | +8.1 / +12.6 |
 | Rail current, ideal rail (mA) | 89.8 | 89.8 | 94.5 |
 | Input current from 13.8 V, full supply (mA) | 95.1 | 95.1 | 99.8 |
-| Largest two-tone difference, 80 vs 160 steps (dB) | 0.94 (IIP2) | 0.45 | 0.43 |
+| Largest two-tone difference, 80 vs 160 steps (dB) | 0.83 (IIP2) | 0.51 | 0.41 |
 
 **Build C:** with 0 dBm tones it is approaching compression, and IIP2 and IIP3 collapse. Use it only where the antenna delivers well under −10 dBm per signal.
 

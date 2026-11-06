@@ -265,20 +265,80 @@ def op(P):
     v['Irail_mA'] = -v[curr] * 1e3
     return v
 
-def _ac_files(P, drive_port, fstart, fstop, ppd, extra_loads=""):
-    ndec = np.log10(fstop / fstart)
-    spec = dict(xmin=fstart, xmax=fstop, min_rows=int(ppd * ndec * 0.95))
+# ---------------------------------------------------------------- frequency sampling
+# Every AC analysis = a dense log sweep PLUS exact single-frequency solutions at the band edges
+# and at every frequency that is reported by name. Named values are read only at exactly
+# simulated frequencies (never nearest-grid-point), and passband extrema require both band
+# edges to be present. wrdata prints 9 significant digits, hence FREQ_RTOL.
+BAND = (1e4, 50e6)
+REPORT_FREQS = (1e4, 1e5, 1e6, 7e6, 10e6, 14e6, 28e6, 30e6, 50e6, 88e6, 100e6, 108e6, 150e6)
+FREQ_RTOL = 1e-7
+MAX_BAND_STEP = 10 ** (1 / 20)     # passband extrema need at least 20 points per decade
+
+def exact_points(fstart, fstop, include=()):
+    pts = {fstart, fstop}
+    pts |= {x for x in BAND if fstart <= x <= fstop}
+    pts |= {float(x) for x in include if fstart <= x <= fstop}
+    return sorted(pts)
+
+def has_freq(f, F):
+    return bool(np.any(np.abs(np.asarray(f) - F) <= FREQ_RTOL * F))
+
+def at(f, a, F):
+    """Value of a at exactly frequency F. Raises SimError if F was not simulated (no nearest-point fallback)."""
+    f = np.asarray(f); i = np.where(np.abs(f - F) <= FREQ_RTOL * F)[0]
+    if len(i) == 0:
+        raise SimError(f"frequency {F:g} Hz was not simulated exactly; add it to the exact-frequency list")
+    return a[i[0]]
+
+def band_mask(f, lo=BAND[0], hi=BAND[1]):
+    """Inclusive passband mask. Raises if either edge is missing or the band is sampled too sparsely."""
+    f = np.asarray(f)
+    for edge in (lo, hi):
+        if not has_freq(f, edge):
+            raise SimError(f"band edge {edge:g} Hz missing from the sweep; passband extrema would omit it")
+    m = (f >= lo * (1 - FREQ_RTOL)) & (f <= hi * (1 + FREQ_RTOL))
+    fb = f[m]
+    if np.any(np.diff(fb) <= 0):
+        raise SimError("frequency grid not strictly increasing")
+    if np.max(fb[1:] / fb[:-1]) > MAX_BAND_STEP * (1 + 1e-9):
+        raise SimError(f"passband sampled too sparsely (max step ratio {np.max(fb[1:] / fb[:-1]):.4f})")
+    return m
+
+def band_extrema(f, a, lo=BAND[0], hi=BAND[1]):
+    m = band_mask(f, lo, hi)
+    return float(np.min(a[m])), float(np.max(a[m]))
+
+def ac_sweep(P, loads, vectors, fstart, fstop, ppd, exact=(), supply_over=None):
+    """Generic AC: dense dec sweep + exact single-frequency solves at fstart, fstop, band edges and `exact`.
+    Returns (f, [complex array per vector]) on the merged, sorted grid."""
+    ndec = np.log10(fstop / fstart); vec = " ".join(vectors); nv = len(vectors)
+    pts = exact_points(fstart, fstop, exact)
+    an = [f"ac dec {ppd} {fstart} {fstop}", f"wrdata ac.txt {vec}"]
+    outs = {"ac.txt": dict(xmin=fstart, xmax=fstop, min_rows=int(ppd * ndec * 0.95), ncols=3 * nv)}
+    for k, F in enumerate(pts):
+        an += [f"ac lin 1 {F!r} {F!r}", f"wrdata ex{k}.txt {vec}"]
+        outs[f"ex{k}.txt"] = dict(min_rows=1, ncols=3 * nv)
+    log, data = run(netlist(P, "\n".join(an), loads, supply_over=supply_over), outs)
+    rows = []
+    for k, F in enumerate(pts):
+        e = data[f"ex{k}.txt"]
+        if e.shape[0] != 1 or abs(e[0, 0] - F) > FREQ_RTOL * F:
+            raise SimError(f"exact-frequency run returned f={e[0, 0]:.9g}, requested {F:.9g}")
+        rows.append(e)
+    dense = data["ac.txt"]
+    keep = np.array([not any(abs(x - F) <= FREQ_RTOL * F for F in pts) for x in dense[:, 0]])
+    a = np.vstack([dense[keep]] + rows); a = a[np.argsort(a[:, 0])]
+    return a[:, 0], [a[:, 3 * i + 1] + 1j * a[:, 3 * i + 2] for i in range(nv)]
+
+def _ac_files(P, drive_port, fstart, fstop, ppd, extra_loads="", exact=()):
     nodes = ["in"] + [f"p{k}" for k in range(1, P['NPORT'] + 1)]
     if drive_port == 0:
         loads = src50(P) + "\n" + portloads(P)
     else:
         loads = "RGIN IN 0 50\n" + portloads(P, drive=drive_port)
-    an = f"ac dec {ppd} {fstart} {fstop}\nwrdata ac.txt " + " ".join(f"v({n})" for n in nodes)
-    log, data = run(netlist(P, an, loads + "\n" + extra_loads), {"ac.txt": dict(spec, ncols=3 * len(nodes))})
-    a = data["ac.txt"]
-    f = a[:, 0]
-    V = np.array([a[:, 3 * i + 1] + 1j * a[:, 3 * i + 2] for i in range(len(nodes))])
-    return f, V
+    f, V = ac_sweep(P, loads + "\n" + extra_loads, [f"v({n})" for n in nodes], fstart, fstop, ppd, exact)
+    return f, np.array(V)
 
 def smatrix(P, fstart=1e4, fstop=2e9, ppd=30):
     """Full (NPORT+1)-port S-matrix, port 0 = antenna input, ports 1..N = outputs, 50-ohm reference."""
@@ -291,9 +351,11 @@ def smatrix(P, fstart=1e4, fstop=2e9, ppd=30):
             S[:, i, j] = V[i] - (1.0 if i == j else 0.0)
     return f, S
 
-def ac(P, fstart=1e3, fstop=200e6, ppd=40):
-    f, Vf = _ac_files(P, 0, fstart, fstop, ppd)
-    f2, Vr = _ac_files(P, 2, fstart, fstop, ppd)
+def ac(P, fstart=1e3, fstop=200e6, ppd=40, exact=REPORT_FREQS):
+    f, Vf = _ac_files(P, 0, fstart, fstop, ppd, exact=exact)
+    f2, Vr = _ac_files(P, 2, fstart, fstop, ppd, exact=exact)
+    if len(f) != len(f2) or np.any(f != f2):
+        raise SimError("forward and reverse sweeps returned different frequency grids")
     db = lambda x: 20 * np.log10(np.abs(x))
     return dict(f=f, S21=db(Vf[1]), S11=db(Vf[0] - 1), iso=db(Vr[3]), rev=db(Vr[0]), S22=db(Vr[2] - 1),
                 zin=50 * Vf[0] / (2 - Vf[0]), zout=50 * Vr[2] / (2 - Vr[2]))
@@ -324,6 +386,8 @@ def twotone(P, f1=7.0e6, f2=7.2e6, pin=-10, T=None, step=None, settle=20e-6, rel
     a = np.sqrt(2 * 50 * 10 ** (pin / 10) / 1000) * 2
     df = abs(f2 - f1)
     if T is None: T = max(10 / df, 40 / min(f1, f2))
+    fbin = float(np.gcd(int(round(f1)), int(round(f2))))
+    T = np.ceil(T * fbin - 1e-9) / fbin      # whole number of cycles of every tone and product: all on exact FFT bins
     fmax = max(2 * f2 + f1, f1 + f2)
     if step is None: step = 1 / (fmax * steps_per_cycle)
     step = T / np.ceil(T / step)          # integer number of steps in the record, so the linearized grid ends exactly at tstop
@@ -331,10 +395,15 @@ def twotone(P, f1=7.0e6, f2=7.2e6, pin=-10, T=None, step=None, settle=20e-6, rel
     an = (f"tran {step} {settle+T} {settle} {step}\nlinearize v(p1)\nwrdata tt.txt v(p1)")
     cir = netlist(P, an, loads, extra=f".options reltol={reltol} abstol=1e-14 vntol=1e-9 method={method}")
     log, data = run(cir, {"tt.txt": dict(xmin=settle, xmax=settle + T, min_rows=1000, ncols=2)})
-    d = data["tt.txt"]; t = d[:, 0]; v = d[:, 1] - d[:, 1].mean()
-    w = np.blackman(len(v)); S = np.fft.rfft(v * w) / np.sum(w) * 2; fr = np.fft.rfftfreq(len(v), t[1] - t[0])
+    full = data["tt.txt"]; dt = (full[-1, 0] - full[0, 0]) / (len(full) - 1)   # wrdata time stamps are rounded; use the span
+    d = full[:-1]             # drop the closing sample: the record is then exactly T long (periodic)
+    t = d[:, 0]; v = d[:, 1] - d[:, 1].mean()
+    w = np.blackman(len(v)); S = np.fft.rfft(v * w) / np.sum(w) * 2; fr = np.fft.rfftfreq(len(v), dt)
     def pw(F):
-        i = np.argmin(abs(fr - F)); m = max(abs(S[max(i - 2, 0):i + 3])); return 10 * np.log10(m ** 2 / 2 / 50 * 1000)
+        i = np.argmin(abs(fr - F))
+        if abs(fr[i] - F) > 1e-6 * (fr[1] - fr[0]):
+            raise SimError(f"two-tone product {F:g} Hz is not on an FFT bin")
+        m = max(abs(S[max(i - 2, 0):i + 3])); return 10 * np.log10(m ** 2 / 2 / 50 * 1000)
     r = dict(f1=pw(f1), f2=pw(f2), im3l=pw(2 * f1 - f2), im3h=pw(2 * f2 - f1), im2s=pw(f1 + f2))
     r['gain'] = r['f1'] - pin
     r['oip3'] = r['f1'] + (r['f1'] - max(r['im3l'], r['im3h'])) / 2; r['iip3'] = r['oip3'] - r['gain']
@@ -348,9 +417,12 @@ def single_tone_pout(P, f=7e6, pin=0, T=25e-6, settle=5e-6):
     an = f"tran {step} {settle+T} {settle} {step}\nlinearize v(p1)\nwrdata p.txt v(p1)"
     log, data = run(netlist(P, an, loads, extra=".options reltol=1e-5 method=gear"),
                     {"p.txt": dict(xmin=settle, xmax=settle + T, min_rows=500, ncols=2)})
-    d = data["p.txt"]; v = d[:, 1] - d[:, 1].mean(); w = np.blackman(len(v))
-    S = np.fft.rfft(v * w) / w.sum() * 2; fr = np.fft.rfftfreq(len(v), d[1, 0] - d[0, 0])
-    i = np.argmin(abs(fr - f)); return 10 * np.log10(max(abs(S[i - 2:i + 3])) ** 2 / 2 / 50 * 1000)
+    full = data["p.txt"]; dt = (full[-1, 0] - full[0, 0]) / (len(full) - 1)
+    d = full[:-1]; v = d[:, 1] - d[:, 1].mean(); w = np.blackman(len(v))
+    S = np.fft.rfft(v * w) / w.sum() * 2; fr = np.fft.rfftfreq(len(v), dt)
+    i = np.argmin(abs(fr - f))
+    if abs(fr[i] - f) > 1e-6 * (fr[1] - fr[0]): raise SimError(f"tone {f:g} Hz is not on an FFT bin")
+    return 10 * np.log10(max(abs(S[i - 2:i + 3])) ** 2 / 2 / 50 * 1000)
 
 def p1db(P, f=7e6, pins=range(-10, 22, 1)):
     rows = []
