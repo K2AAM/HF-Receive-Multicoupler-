@@ -3,7 +3,7 @@
 Expected values come from simulation (9.81 V rail) and are not measurements. Monte Carlo (MC) ranges are given where they exist. They describe simulated tolerance spread, not guaranteed hardware limits. Measured values outside them call for investigation, not automatic rejection.
 
 ## 0. Select the LPF inductors (before assembly)
-The Bourns 78FR inductors are ±10 %. In simulation, unselected parts can degrade S11 to about −11 dB. Parts selected to ±3 % hold S11 ≤ −19.4 dB (worst of 200 Monte Carlo units).
+The Bourns 78FR inductors are ±10 %. In simulation, unselected parts can degrade S11 to about −11 dB. Parts selected to ±3 % hold S11 ≤ −19.4 dB (worst of 200 Monte Carlo units), or about −19.2 dB with ±5 % 43 pF end capacitors. Optional: buy 6 of the 43 pF capacitors and fit the two closest to 43 pF.
 
 1. Buy 10 × 78FR22K-RC (L1, L3) and 5 × 78FR27K-RC (L2).
 2. Calibrate the VNA (SOL) at the end of a short fixture: a BNC-to-clip or SMA edge pad with ≤ 5 mm leads.

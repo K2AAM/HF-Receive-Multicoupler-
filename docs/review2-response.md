@@ -356,6 +356,6 @@ Conditions: 50 Ω source, four 50 Ω loads, measured at J2. Ideal 9.81 V rail. E
 
 **PCB layout readiness:** ready to start layout. No simulation blocker remains. Open items that do not block layout but must be closed before ordering parts:
 
-- Confirm current distributor stock of KEMET C315C430G3G5TA (43 pF ±2 %). An equivalent ±2 % C0G radial on a 2.54 mm pitch fits the same footprint.
+- C4/C7 (43 pF): the ±2 % KEMET C315C430G3G5TA is only sold in large lots, so it is replaced by the stocked ±5 % KEMET C325C430JAG5TA. Simulated effect with selected inductors (100 samples, `lpf_endcaps.py` → `results/lpf_endcap_tolerance.json`): worst S11 changes from −19.9 to −19.2 dB, while flatness (0.93 dB) and 88 MHz rejection (33.6 dB) are unchanged. C5/C6 (100 pF) stay at ±2 %, and selection still applies to the inductors only. The supported worst-case S11 becomes about −19 dB.
 - Confirm 78FR27K-RC stock.
 - Note the footprints: L4 needs a radial 9.2 mm dia / 5 mm pitch footprint, and F1 a 7.4 × 3 mm radial.

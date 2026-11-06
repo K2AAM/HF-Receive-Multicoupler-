@@ -32,7 +32,7 @@ Conditions: 50 Ω source, four 50 Ω loads, measured at J2. Nominal parts, 9.81 
 - gain at 1 MHz: 1.54–1.89 dB
 - gain at 50 MHz: 0.69–1.04 dB
 - flatness, 10 kHz–50 MHz: 0.79–0.91 dB
-- worst S11: −19.4 dB
+- worst S11: −19.4 dB (about −19.2 dB with the stocked ±5 % 43 pF end capacitors now in the BOM)
 - rejection at 88 MHz: 33.4–35.8 dB
 - NF at 10 MHz: 8.1–9.1 dB
 - IIP3 at 7 MHz: +29.1 to +31.8 dBm
