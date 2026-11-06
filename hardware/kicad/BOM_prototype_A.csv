@@ -1,0 +1,57 @@
+KiCad refs,Doc/sim refs (if different),Qty,Value,Manufacturer part,KiCad footprint,Body / pitch (from datasheet),Notes
+C1,,1,4.7u 100V film,KEMET R60EI4470AA30J,Capacitor_THT:C_Rect_L18.0mm_W11.0mm_P15.00mm_FKS3_FKP3,"18 x 11 x 19.1 mm, 15 mm pitch","18x11x19.1 mm, 15 mm pitch"
+C2 C3 C8 C9,,4,2.2u film,KEMET R82CC4220DQ70J,Capacitor_THT:C_Rect_L7.2mm_W7.2mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,"7.2 x 6 x 11 mm, 5 mm pitch",
+C4 C7,,2,43p C0G 5%,KEMET C325C430JAG5TA,hfmc:C_Disc_W3.2mm_P2.54mm_P5.08mm_Universal,"5.08 x 3.18, H 7.62 max, 2.54 or 5.08 mm",
+C5 C6,,2,100p C0G 2%,KEMET C315C101G1G5TA,Capacitor_THT:C_Disc_D3.8mm_W2.6mm_P2.50mm,"3.81 x 2.54, H 4.66 max, 2.54 mm",
+C10 C11 C12 C13,,4,4.7u film,KEMET R82CC4470DQ30K,Capacitor_THT:C_Rect_L7.2mm_W7.2mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,"7.2 x 7.2 x 13 mm, 5 mm pitch",
+C14 C15 C21 C23,,4,10u 25V,Panasonic ECA-1EM100,Capacitor_THT:CP_Radial_D5.0mm_P2.00mm,"5 x 11, 2 mm pitch",+ to RM; + to VCC; U1 output cap (CU1O)
+C16 C17 C18 C19 C24 C25 C26,,7,100n,KEMET C320C104K5R5TA,hfmc:C_Radial_KEMET_C320_L5.08mm_T3.18mm_P2.54mm,"5.08 x 3.18, H 7.36 max, 2.54 mm",Local bypass at Q3A collector; Local bypass at RE2/R4/C15; Local bypass at RPU; Local bypass rail entry to amplifier
+C20,,1,220u 25V,Panasonic EEU-FR1E221,Capacitor_THT:CP_Radial_D8.0mm_P3.50mm,"8 x 11.5, 3.5 mm pitch",
+C22,,1,470u 16V,Panasonic EEU-FR1C471,Capacitor_THT:CP_Radial_D8.0mm_P3.50mm,"8 x 11.5, 3.5 mm pitch",
+D1 D2 D3 D4,,4,1N4148,onsemi 1N4148,Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal,,
+D5,,1,1N5819,onsemi 1N5819,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,,
+D6 D7,,2,1N4002,onsemi 1N4002,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,,
+F1,,1,RXEF030,Littelfuse RXEF030,hfmc:Fuse_Littelfuse_RXEF_7.4x3.0mm_P5.10mm,"7.4 x 3.0, H 12.7 max, 5.1 mm",
+GDT1,,1,90V,Bourns 2027-09-BLF,hfmc:GDT_Bourns_2027_Axial_D8.0mm_L6.0mm_P12.70mm_Horizontal,8 dia x 6 axial,Ground pad bonded to MH1 (chassis) by a short wide pour
+J1,,1,ANT IN (panel BNC pigtail),"Amphenol RF 031-221-RFX (panel BNC, wired with ~60 mm RG-316)",hfmc:Pads_CoaxPigtail_RG316,,"Panel jack on the LEFT short wall (see docs/pcb-mechanical.md); RG-316 pigtail to these pads, braid to both GND pads"
+J2,,1,OUT1,Amphenol RF 031-5431-10RFX,hfmc:BNC_Amphenol_031-5431-10RFX_Horizontal,"R/A PCB bulkhead, rear mount",
+J3,,1,OUT2,Amphenol RF 031-5431-10RFX,hfmc:BNC_Amphenol_031-5431-10RFX_Horizontal,"R/A PCB bulkhead, rear mount",
+J4,,1,OUT3,Amphenol RF 031-5431-10RFX,hfmc:BNC_Amphenol_031-5431-10RFX_Horizontal,"R/A PCB bulkhead, rear mount",
+J5,,1,OUT4,Amphenol RF 031-5431-10RFX,hfmc:BNC_Amphenol_031-5431-10RFX_Horizontal,"R/A PCB bulkhead, rear mount",
+J6,,1,13.8V IN (panel jack),"Switchcraft 722A (2.1 mm panel jack, centre +)",hfmc:Pads_PowerWire_1x02_P5.08mm,,Wired to the back-wall jack
+L1 L3,,2,220n,Bourns 78FR22K-RC (VNA-selected +/-3%),Inductor_THT:L_Axial_L7.0mm_D3.3mm_P10.16mm_Horizontal_Fastron_MICC,,
+L2,,1,270n,Bourns 78FR27K-RC (VNA-selected +/-3%),Inductor_THT:L_Axial_L7.0mm_D3.3mm_P10.16mm_Horizontal_Fastron_MICC,,
+L4,,1,10u,Bourns RLB0914-100KL,Inductor_THT:L_Radial_D9.5mm_P5.00mm_Fastron_07HVP,"8.7 dia x 13 mm max, 5 mm pitch",
+Q1,Q1N,1,2N3904,onsemi 2N3904BU,Package_TO_SOT_THT:TO-92_Inline,,
+Q2,Q1P,1,2N3906,onsemi 2N3906BU,Package_TO_SOT_THT:TO-92_Inline,,
+Q3 Q6,Q2A Q3,2,2N3906,onsemi 2N3906BU,hfmc:TO-92_Inline_ThermalPair,,Thermal pair: glue flat face to Q4 (doc Q3A); Thermal pair: glue flat face to Q5 (doc Q2)
+Q4 Q5,Q3A Q2,2,2N3904,onsemi 2N3904BU,hfmc:TO-92_Inline_ThermalPair,,Thermal pair: glue flat face to Q3 (doc Q2A); Thermal pair: glue flat face to Q6 (doc Q3)
+R1,RBL,1,10k,Yageo MFR-25FBF52-10K,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R2 R3,RE1 RE2,2,56,Yageo MFR-25FBF52-56R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,"Build A 56 (B 56, C 47)"
+R4 R5,RF RL,2,220,Yageo MFR-25FBF52-220R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,"Build A 220 (B 270, C 330); RLX, all builds"
+R6 R7 R9 R10,R1A R1B R3A R3B,4,1.5k,Yageo MFR-25FBF52-1K5,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R8 R11,R2 R4,2,3.3k,Yageo MFR-25FBF52-3K3,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R12 R13,RPU RPD,2,360,Yageo MFR-25FBF52-360R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R14 R15,RX1 RX2,2,15,Yageo MFR-25FBF52-15R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R16,RC,1,4.7,Yageo MFR-25FBF52-4R7,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R17 R18,RE3 RE4,2,3.3,Yageo MFR-25FBF52-3R3,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R19 R20 R21 R22,RS1 RS2 RS3 RS4,4,51,Yageo MFR-25FBF52-51R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R23,R10,1,240,Yageo MFR-25FBF52-240R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R24,R11,1,1.65k,Yageo MFR-25FBF52-1K65,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+R25,RDAMP,1,1.0,Yageo MFR-25FBF52-1R,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,,
+TP1,,1,VCC,Keystone 5000,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,+9.8 V rail
+TP2,,1,X,Keystone 5000,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,gain-stage collector node X
+TP3,,1,OUT,Keystone 5000,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,common output node
+TP4,,1,EF,Keystone 5000,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,RE3 top: I(Q2) = V(TP4-TP3)/3.3
+TP5,,1,EG,Keystone 5000,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,RE4 bottom: I(Q3) = V(TP3-TP5)/3.3
+TP6,,1,EN,Keystone 5000,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,RE1 top: I(Q1N) = V(TP6)/56
+TP7 TP8,,2,GND,Keystone 5001,TestPoint:TestPoint_Keystone_5000-5004_Miniature,,ground
+U1,,1,LM317T,TI LM317T/NOPB,Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown,,"Lies flat, tab down on solder mask over a copper keep-out (tab = VOUT); optional M3 nylon screw, no heatsink"
+(J1 panel),,1,"BNC jack, front-mount bulkhead",Amphenol RF 031-221-RFX,panel (left short wall),"27 mm long, 3/8-32, 12.7 hex nut, max panel 3.2",Input connector; RG-316 pigtail to J1 pads. Panel hole per Amphenol drawing (verify)
+(J1 cable),,1,"RG-316 coax, ~60 mm",any RG-316 (e.g. Belden 83284),,,"Centre to J1 pad 1, braid to J1 pads 2"
+(J6 panel),,1,DC power jack 2.1 mm (2.0 mm pin),Switchcraft 722A,panel (back wall),"approx. 23 mm long, solder lugs","Centre positive. Wire to J6 pads (1 = +13.8 V, 2 = GND)"
+MH1-MH5,,5,"M3 x 4 mm round spacer, brass",e.g. Keystone or Wurth M3 x 4 mm (choose; 4.0 mm length is the requirement),MountingHole_3.2mm_M3_Pad_Via,,Height set by C1 vs lid clearance; metal spacers bond board GND to the box at every hole
+MH1-MH5,,10,"M3 screw, pan head, 6 mm (top) + 6-8 mm (through floor)",any stainless M3,,,Countersunk or pan through the floor; check length vs floor thickness
+"Q3/Q5, Q4/Q6","Q2A/Q2, Q3A/Q3",1,thermally conductive epoxy or cyanoacrylate + heat-shrink,e.g. Arctic Silver thermal adhesive,,,Glue the flat faces of each pair together
+U1,,1,M3 x 8 nylon screw + nut (optional),any nylon M3,,,Tab is VOUT; do not use a metal screw
+Enclosure,,1,Hammond 1590BB,Hammond 1590BB,,119.5 x 94 x 34 mm with lid,Drill per docs/pcb-mechanical.md

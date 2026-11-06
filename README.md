@@ -2,7 +2,7 @@
 
 One antenna (an active receive loop such as the LZ1AQ AAA-1C or W6LVP) feeding four receivers: an RX888 or RSPdx plus vintage communications receivers. Four ports, through-hole, no hand-wound transformers, 13.8 V supply.
 
-**Status:** design and simulation only. Nothing here has been built or measured yet. All performance numbers are ngspice simulations with approximate transistor models. Treat them as estimates until the hardware is measured. The second verification pass ([`docs/review2-response.md`](docs/review2-response.md)) lists what is supported, what is not, and what needs bench work.
+**Status:** design, simulation and a first prototype PCB layout (build A, branch `prototype-pcb`). Nothing here has been built or measured yet. All performance numbers are ngspice simulations with approximate transistor models. Treat them as estimates until the hardware is measured. The second verification pass ([`docs/review2-response.md`](docs/review2-response.md)) lists what is supported, what is not, and what needs bench work.
 
 ![schematic](hardware/schematic_revB.png)
 
@@ -45,6 +45,18 @@ All band-edge and named-frequency values come from exact single-frequency solves
 
 Builds B (+3.2 dB) and C (+5.5 dB) are in [`sim/results/summary.json`](sim/results/summary.json). Build C loses intercept quickly with signals near 0 dBm.
 
+## Prototype PCB (build A)
+
+![PCB front](hardware/kicad/img/pcb_front.png)
+
+- **Board:** 2 layers, through-hole, 104 × 78 mm, for a Hammond 1590BB.
+- **Connectors:** four R/A PCB BNC outputs on the front wall; input BNC on the left wall and DC jack on the back wall, both panel-mounted.
+- **Checks:** DRC is clean, and the schematic, PCB and simulation netlists agree pin for pin. KiCad's own ERC still needs one run in eeschema (KiCad 7 has no command-line ERC).
+- **Layout-parasitic estimate (simulated):** with the estimated trace capacitance, worst S11 moves from −23 dB to about −18 dB. The gain response barely moves.
+- **Before ordering:** the enclosure dimensions and connector panel cut-outs still need checking on real parts.
+
+Details: [`docs/pcb-prototype-A.md`](docs/pcb-prototype-A.md).
+
 ## Repository layout
 
 | Path | Contents |
@@ -53,6 +65,8 @@ Builds B (+3.2 dB) and C (+5.5 dB) are in [`sim/results/summary.json`](sim/resul
 | `docs/review2-response.md` | Current verification status (supersedes parts of `review-response.md`) |
 | `docs/bringup-and-test.md` | Inductor selection, power-only test with dummy load, bring-up and bench tests |
 | `docs/layout-guidance.md` | PCB layout rules |
+| `docs/pcb-prototype-A.md` | Prototype PCB (build A): part and footprint choices, layout, checks done, Hammond 1590BB fit, layout-parasitic estimate, open items before ordering |
+| `hardware/kicad/` | KiCad 7 project (schematic, PCB, footprint library), Gerbers and drill, BOM with MPNs and footprints, board and enclosure images, generator and check scripts |
 | `sim/scripts/gen.py` | Single netlist generator; builds A/B/C in `BUILDS`; checked simulation runner |
 | `sim/spice/*.cir` | Standalone decks for build A (exported by `export_netlists.py`) |
 | `sim/results/` | All generated results |

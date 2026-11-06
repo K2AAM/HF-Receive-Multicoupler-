@@ -1,6 +1,6 @@
 # Layout guidance (Rev B, through-hole, Hammond 1590BB)
 
-The schematic and calculations are settled. These are guidelines for the KiCad layout, which is not done yet.
+The schematic and calculations are settled. These were the guidelines for the KiCad layout. The prototype layout now exists: see [`pcb-prototype-A.md`](pcb-prototype-A.md) for how it follows them and where it deviates (J1 and J6 on different walls; no separate via fence between L1 and L3; GDT ground through the pours).
 
 ## Board and enclosure
 - 2-layer, 1.6 mm FR-4. The bottom layer is an unbroken ground plane, and top-side ground pour is stitched to it with vias every ~5 mm along RF traces.

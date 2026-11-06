@@ -1,0 +1,6 @@
+sim elements checked against design: 64; node map size 39
+schematic pins checked: 174
+PCB pads checked: 225
+sim-only elements (sources, loads, behavioural regulator, ESR/loss models): BPASS BUT CPI IADJ LZU RPTC RZU VIN VRIP
+KiCad-only parts (connectors, protection, test points, holes, extra bypass): C19 C24 C25 C26 F1 GDT1 J1 J2 J3 J4 J5 J6 MH1 MH2 MH3 MH4 MH5 TP1 TP2 TP3 TP4 TP5 TP6 TP7 TP8
+RESULT: PASS

@@ -1,0 +1,16 @@
+Stack: floor 0, standoff 4.0, PCB 4.0-5.6, cavity to rim 27.5 (ASSUMED floor 2.5), usable 26.0
+  C1    top  24.7 mm above floor -> margin to usable top  1.3 mm (KEMET R60EI4470AA30J H 19.1)
+  J5    top  22.0 mm above floor -> margin to usable top  4.0 mm (031-5431-10RFX CL 8.6 + housing 15.6/2)
+  J2    top  22.0 mm above floor -> margin to usable top  4.0 mm (031-5431-10RFX CL 8.6 + housing 15.6/2)
+  J4    top  22.0 mm above floor -> margin to usable top  4.0 mm (031-5431-10RFX CL 8.6 + housing 15.6/2)
+  J3    top  22.0 mm above floor -> margin to usable top  4.0 mm (031-5431-10RFX CL 8.6 + housing 15.6/2)
+  C22   top  18.6 mm above floor -> margin to usable top  7.4 mm (Panasonic FR 8x11.5 + 1.5)
+J1 031-221-RFX (input, left wall): centre z 16.5 above inside floor; under it: MH1; clearance below 1.1 mm, to usable top 2.1 mm, boss conflict False -> OK
+J6 722A DC jack (back wall): centre z 19.5 above inside floor; under it: D5, C17, J6; clearance below 1.5 mm, to usable top 1.5 mm, boss conflict False -> OK
+PCB BNC front face y = 42.50; drafted inner wall at BNC height y = 43.02 -> gap 0.52 mm (ASSUMED wall data)
+Board 104.0 x 78.0: side clearance at PCB height x 3.41, y 3.66 mm
+  boss at (-51.75,-39.00): clearance to board edge 2.75 mm
+  boss at (-51.75,+39.00): clearance to board edge 2.75 mm
+  boss at (+51.75,-39.00): clearance to board edge 2.75 mm
+  boss at (+51.75,+39.00): clearance to board edge 2.75 mm
+RESULT height OK, wall connectors OK

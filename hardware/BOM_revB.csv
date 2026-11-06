@@ -2,28 +2,28 @@ Ref,Qty,Value,Tolerance / rating,Manufacturer part,Package,Role / notes,Source (
 "Q1N,Q3A,Q2",3,2N3904,hFE 100-300 @10 mA,onsemi 2N3904BU or Diotec 2N3904,TO-92,"Gain stage NPN, diamond pre-driver, NPN output. Buy all from one lot",https://www.digikey.com.au/en/products/detail/stmicroelectronics/2N3904/603420 (lists onsemi substitute in stock),Stocked jellybean
 "Q1P,Q2A,Q3",3,2N3906,hFE 100-300 @10 mA,Diotec 2N3906 or onsemi 2N3906BU,TO-92,"Gain stage PNP, diamond pre-driver, PNP output. Buy all from one lot",https://www.digikey.com/en/products/detail/diotec-semiconductor/2N3906/22191309,Stocked jellybean (Active)
 D1-D4,4,1N4148,,any,DO-35,"Input clamp, two in series each polarity",jellybean - not individually checked,
-D5,1,1N5819,40 V 1 A; IFSM 25 A,any,DO-41,"Reverse-polarity protection; carries ~8-11 A hot-plug inrush into C20 for <1 ms (simulated)",jellybean - not individually checked,
-"D6,D7",2,1N4002,100 V 1 A,any,DO-41,"NEW. LM317 protection per TI datasheet: D6 U1 OUT(anode) to IN(cathode); D7 ADJ(anode) to OUT(cathode)",jellybean - not individually checked,
+D5,1,1N5819,40 V 1 A; IFSM 25 A,any,DO-41,Reverse-polarity protection; carries ~8-11 A hot-plug inrush into C20 for <1 ms (simulated),jellybean - not individually checked,
+"D6,D7",2,1N4002,100 V 1 A,any,DO-41,NEW. LM317 protection per TI datasheet: D6 U1 OUT(anode) to IN(cathode); D7 ADJ(anode) to OUT(cathode),jellybean - not individually checked,
 GDT1,1,90 V GDT,,Bourns 2027-09-BLF,axial 2-pole,Input surge to chassis ground,https://www.digikey.com.mx/en/products/detail/bourns-inc/2027-09-BLF/1219537,Active
 U1,1,LM317T,VREF 1.20-1.30 V; min load 10 mA max,TI LM317T/NOPB,TO-220,"Rail 9.81 V at 13.8 V in (R10 240, R11 1.65k). ~0.33 W, no heatsink needed",https://www.ti.com/product/LM317,Active
-F1,1,PTC 0.3 A hold / 0.6 A trip,Rmin 0.88 / Rmax 1.33 / R1max 2.1 ohm,Littelfuse RXEF030,radial 7.4 x 3 mm,"CHANGED from RXEF020: lower resistance keeps U1 at >=3 V headroom at 13.4 V in",https://octopart.com/part/littelfuse/RXEF030,Production
+F1,1,PTC 0.3 A hold / 0.6 A trip,Rmin 0.88 / Rmax 1.33 / R1max 2.1 ohm,Littelfuse RXEF030,radial 7.4 x 3 mm,CHANGED from RXEF020: lower resistance keeps U1 at >=3 V headroom at 13.4 V in,https://octopart.com/part/littelfuse/RXEF030,Production
 "L1,L3",2,220 nH,+/-10 % (K); select to +/-3 % on VNA,Bourns 78FR22K-RC,axial 2.79 x 7.11 mm,"LPF. Q 40 min @25 MHz, SRF 380 MHz, DCR 75 mohm. Buy 10 and select (see bring-up)",https://digikey.cn/en/products/detail/bourns-inc/78FR22K-RC/1306006 (DigiKey M10148-ND),Active
 L2,1,270 nH,+/-10 % (K); select to +/-3 % on VNA,Bourns 78FR27K-RC,axial,"LPF. 1.11 A, DCR 85 mohm. Buy 5 and select",DigiKey 118-78FR27K-RC-ND,Listed
 L4,1,10 uH,+/-10 %; 2.7 A; DCR 48 mohm max; SRF 20 MHz,Bourns RLB0914-100KL,radial 8.7-9.2 dia x 12-13 mm; 5 mm pitch,"CHANGED from unspecified 100 uH. Rail filter after U1, with RDAMP",https://uk.rs-online.com/web/p/leaded-inductors/8118799,Production
 "C4,C7",2,43 pF C0G,+/-5 % (J); 250 V,KEMET C325C430JAG5TA,radial,"LPF end shunts. CHANGED from C315C430G3G5TA (+/-2 %, only sold in large lots). Simulated cost of +/-5 % here: worst S11 -19.9 -> -19.2 dB, flatness and 88 MHz rejection unchanged (results/lpf_endcap_tolerance.json). Optional: buy 6, keep the two closest to 43 pF. Check lead pitch before drawing the footprint (allow 2.54 and 5.08 mm)",https://www.digikey.lt/en/products/detail/kemet/C325C430JAG5TA/6656057 (single-unit pricing; 1025 in stock on DigiKey.my when checked 2026-11-05),Active
 "C5,C6",2,100 pF C0G,+/-2 % (G); 100 V,KEMET C315C101G1G5TA,radial 2.54 mm,LPF (+/-1 %: C315C101F1G5TA),DigiKey.de (3293 in stock when checked),Active
-C1,1,4.7 uF film,+/-10 %; 100 V,WIMA MKS4D044705G00KSSD,radial film,"Input DC block, no electrolytic in series path",https://www.digikey.de/en/products/detail/wima/MKS4D044705G00KSSD/9370610,Active
-C10-C13,4,4.7 uF film,+/-10 %; 63 V,WIMA MKS4 4.7 uF,radial film,Port DC blocks,see C1,
-"C2,C3,C8,C9",4,2.2 uF film,+/-10 %; 63 V,WIMA MKS4 2.2 uF,radial film,"Base coupling (C2,C3), feedback (C8), AC load (C9)",not individually checked,
-"C14,C15",2,10 uF 25 V Al electrolytic,+/-20 %,any,radial,"R1 midpoint to GND; R3 midpoint to +V (+ toward +V)",jellybean,
-C20,1,220 uF 25 V low-ESR Al,+/-20 %,any,radial,U1 input (with 100 nF),jellybean,
-C21,1,10 uF 25 V Al,+/-20 %,any,radial,U1 ADJ bypass (requires D7),jellybean,
-C23,1,10 uF 25 V Al,+/-20 %,any,radial,"NEW. At U1 OUT pin, before L4",jellybean,
-C22,1,470 uF 16 V Al + 100 nF,+/-20 %,any,radial,Rail reservoir after L4/RDAMP,jellybean,
-decoupling,~10,100 nF X7R 50 V,,any,radial,At each supply-side resistor and at C20/C22,jellybean,
-RDAMP,1,1.0,1 %; 1/4 W,metal film,axial,"NEW. Damps L4 with C22; 9 mW",,
+C1,1,4.7 uF film,+/-10 %; 100 V,KEMET R60EI4470AA30J,"radial film 18 x 11 x 19.1 mm, 15 mm pitch","Input DC block, no electrolytic in series path. CHANGED for the PCB from WIMA MKS4 (26.5 x 10.5 mm, 22.5 mm pitch: too big)",DigiKey (396 in stock when checked 2026-11-05),Active
+C10-C13,4,4.7 uF film,+/-10 %; 50 V,KEMET R82CC4470DQ30K,"radial film 7.2 x 7.2 x 13 mm, 5 mm pitch",Port DC blocks,checked for PCB layout 2026-11-05,
+"C2,C3,C8,C9",4,2.2 uF film,+/-10 %; 50 V,KEMET R82CC4220DQ70J,"radial film 7.2 x 6 x 11 mm, 5 mm pitch","Base coupling (C2,C3), feedback (C8), AC load (C9)",checked for PCB layout 2026-11-05,
+"C14,C15",2,10 uF 25 V Al electrolytic,+/-20 %,Panasonic ECA-1EM100,"radial 5 x 11 mm, 2 mm pitch",R1 midpoint to GND; R3 midpoint to +V (+ toward +V),jellybean,
+C20,1,220 uF 25 V low-ESR Al,+/-20 %,Panasonic EEU-FR1E221,"radial 8 x 11.5 mm, 3.5 mm pitch",U1 input (with 100 nF),jellybean,
+C21,1,10 uF 25 V Al,+/-20 %,Panasonic ECA-1EM100,"radial 5 x 11 mm, 2 mm pitch",U1 ADJ bypass (requires D7),jellybean,
+C23,1,10 uF 25 V Al,+/-20 %,Panasonic ECA-1EM100,"radial 5 x 11 mm, 2 mm pitch","NEW. At U1 OUT pin, before L4",jellybean,
+C22,1,470 uF 16 V Al + 100 nF,+/-20 %,Panasonic EEU-FR1C471 (+ KEMET C320C104K5R5TA),"radial 8 x 11.5 mm, 3.5 mm pitch",Rail reservoir after L4/RDAMP,jellybean,
+decoupling,7,100 nF X7R 50 V,,KEMET C320C104K5R5TA,"radial 5.08 x 3.18 mm, 2.54 mm pitch","C16-C19, C24-C26 on the PCB: at C20, C22, RC, RE2/R4, RPU, Q3A collector and rail entry",jellybean,
+RDAMP,1,1.0,1 %; 1/4 W,metal film,axial,NEW. Damps L4 with C22; 9 mW,,
 "RE1,RE2",2,56,1 %,metal film 1/4 W,axial,Build A (B: 56; C: 47),,
-RF,1,220,1 %,metal film,axial,"Build A (B: 270; C: 330)",,
+RF,1,220,1 %,metal film,axial,Build A (B: 270; C: 330),,
 RL,1,220,1 %,metal film,axial,AC load (all builds),,
 "R1A,R1B,R3A,R3B",4,1.5k,1 %,metal film,axial,Collector-feedback bias,,
 "R2,R4",2,3.3k,1 %,metal film,axial,Sets Q1 current ~29 mA,,
@@ -35,6 +35,7 @@ RS1-RS4,4,51,1 %,metal film,axial,Port back-termination,,
 RBL,1,10k,1 %,metal film,axial,Input bleed,,
 "R10,R11",2,"240, 1.65k",1 %,metal film,axial,LM317 setting,,
 RDUMMY,1,100 ohm 3 W,5 %,TE ROX3SJ100R,axial 5.5 x 16 mm,"NEW. Test fixture only (not on PCB): rail to GND during power-only bring-up, ~98 mA / ~1 W",https://www.digikey.com/en/products/detail/te-connectivity-passive-product/ROX3SJ100R/3477616 (A106005CT-ND),Active
-J1-J5,5,BNC jack R/A PCB 50 ohm,,Amphenol RF 031-5431-10RFX,through-hole,,https://www.digikey.co.uk/en/products/detail/amphenol-rf/031-5431-10RFX/2041816,Active
-J6,1,2.1 mm DC jack,,any,panel/PCB,Center positive,not checked,
-Enclosure,1,Hammond 1590BB,,Hammond 1590BB,die-cast,,not re-checked,
+J2-J5,4,BNC jack R/A PCB 50 ohm,,Amphenol RF 031-5431-10RFX,through-hole,"Outputs, PCB-mounted on the front wall",https://www.digikey.co.uk/en/products/detail/amphenol-rf/031-5431-10RFX/2041816,Active
+J1,1,"BNC jack, front-mount bulkhead",,Amphenol RF 031-221-RFX,"panel, solder cup",Input. CHANGED for the PCB: panel-mounted on the left wall with ~60 mm RG-316 to the board (rear-mount PCB jacks cannot go on two opposite walls),,
+J6,1,2.1 mm DC jack,,Switchcraft 722A,"panel, solder lugs","Centre positive; 2.0 mm pin, mates with common 2.1 mm plugs. Wired to the PCB",not checked,
+Enclosure,1,Hammond 1590BB,,Hammond 1590BB,die-cast,PCB on five M3 x 4 mm brass spacers; drilling in docs/pcb-prototype-A.md,not re-checked,

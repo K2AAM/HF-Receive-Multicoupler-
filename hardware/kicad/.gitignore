@@ -1,0 +1,11 @@
+freerouting.jar
+*.dsn
+*.ses
+hfmc_p1.*
+hfmc_placed.*
+*.kicad_prl
+fr.log
+logs/
+__pycache__/
+*-backups/
+fp-info-cache

@@ -1,5 +1,7 @@
 # Bring-up and bench test (Rev B)
 
+> **Prototype PCB:** the board-specific assembly steps and test-point readings are in the section *Prototype PCB (build A): assembly and test points* at the end of this file. The PCB uses numeric references (Q1–Q6, R1–R25); the table there maps them to the names used below.
+
 Expected values come from simulation (9.81 V rail) and are not measurements. Monte Carlo (MC) ranges are given where they exist. They describe simulated tolerance spread, not guaranteed hardware limits. Measured values outside them call for investigation, not automatic rejection.
 
 ## 0. Select the LPF inductors (before assembly)
@@ -74,3 +76,67 @@ The LM317's minimum load is up to 10 mA [datasheet], but its divider draws only 
 - A VNA cannot measure noise figure or intercept points.
 - NF needs a calibrated noise source (Y-factor) or a dedicated noise-figure analyzer.
 - Intercept measurements are only as good as the generator isolation and the analyzer's own IM. Always verify with the attenuator step test above.
+
+## Prototype PCB (build A): assembly and test points
+
+The full board description is in [`pcb-prototype-A.md`](pcb-prototype-A.md). All "expected" values below are simulated.
+
+**Reference map:**
+
+| Group | Name in this document → PCB reference |
+| --- | --- |
+| Transistors | Q1N = Q1, Q1P = Q2, Q2A = Q3, Q3A = Q4, Q2 = Q5, Q3 = Q6 |
+| Gain stage and bias | RBL = R1, RE1 = R2, RE2 = R3, RF = R4, RL = R5, R1A = R6, R1B = R7, R2 = R8, R3A = R9, R3B = R10, R4 = R11 |
+| Diamond buffer | RPU = R12, RPD = R13, RX1 = R14, RX2 = R15, RC = R16, RE3 = R17, RE4 = R18 |
+| Ports | RS1–RS4 = R19–R22 |
+| Supply | R10 = R23, R11 = R24, RDAMP = R25 |
+
+### P1. Before soldering
+- Select L1–L3 (step 0). Write the measured values on the silkscreen next to each part.
+- Check the 1590BB against the assumptions in `pcb-prototype-A.md` section 5: floor thickness, depth, bosses. Then drill:
+  - the floor holes for M3 × 4 mm brass spacers, using the bare PCB as a template;
+  - the front-wall BNC holes: 4 × at x = −30, −10, +10, +30 mm from the box centre, centre 14.2 mm above the inside floor;
+  - the left-wall input BNC hole: 8 mm toward the back wall, centre 16.5 mm up;
+  - the back-wall DC jack hole: x = +36 mm, centre 19.5 mm up.
+- Check the panel cut-outs on the connector drawings before drilling.
+
+### P2. Assembly order
+The order is the same as `layout-guidance.md`: supply first, then output stage and ports, then gain stage, then input and LPF.
+
+1. **Supply:**
+   - Fit F1, D5, C17, C20, U1, D6, D7, R23, R24, C21, C23, L4, R25, C22, C18, C19, C24, C25 and C26.
+   - Lay U1 flat. Use a nylon screw or none: the tab is VOUT.
+   - Wire J6 (pad 1 = +13.8 V, centre of the 722A; pad 2 = GND).
+   - Run bring-up step 1 with RDUMMY clipped between TP1 and TP7.
+2. **Diamond buffer, ports and BNCs:**
+   - Glue each thermal pair flat face to flat face *before* soldering: Q3 (2N3906) to Q5 (2N3904), and Q4 (2N3904) to Q6 (2N3906). Seat the bodies about 2 mm above the board.
+   - Fit J2–J5 last in this group, after a trial fit in the box.
+3. **Gain stage:** Q1, Q2 and their resistors and capacitors, plus TP2.
+4. **Input and LPF:**
+   - Fit GDT1, C1, R1, D1–D4, C4–C7 and L1–L3.
+   - Fit J1 as about 60 mm of RG-316: centre to J1 pad 1, braid to both J1 pads 2.
+5. **Into the box:**
+   - Fit spacers and screws at MH1–MH5.
+   - Tighten the BNC nuts before the spacer screws.
+
+### P3. DC readings at the test points (amplifier powered, bring-up step 2)
+| Reading | Expected (sim) |
+| --- | --- |
+| TP1 (VCC) | 9.8 V (9.6–10.2 V) |
+| TP2 (X) | 4.8 V |
+| TP3 (OUT) | 4.8 V |
+| TP6 (EN) | 1.62 V → Q1 current 29 mA |
+| V(TP4) − V(TP3) | 125 mV → Q5 (doc Q2) current 38 mA |
+| V(TP3) − V(TP5) | 125 mV → Q6 (doc Q3) current 38 mA |
+
+TP7 and TP8 are ground.
+
+### P4. Thermal check
+Re-read V(TP4) − V(TP3) after 15 minutes in the closed box (step 2.5).
+
+### P5. Match
+Measure S11 at J1 before anything else in step 3.
+
+- The layout-parasitic estimate predicts about −18 dB worst case, against −23 dB for the schematic alone.
+- If S11 is worse than about −18 dB near 30–50 MHz, change C4 and C7 to 39 pF C0G (estimated −21 dB) and measure again.
+- Keep the change only if it measures better.

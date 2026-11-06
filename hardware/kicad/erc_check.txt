@@ -1,0 +1,2 @@
+components 90, nets 40, pin connections 174
+RESULT: PASS
